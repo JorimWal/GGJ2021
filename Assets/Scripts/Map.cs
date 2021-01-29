@@ -26,6 +26,10 @@ public class Map : MonoBehaviour {
         }
     }
 
+    public Dictionary<Vector2Int, string> getGrid(){
+        return this.grid;
+    }
+
     public string getTileInfo(int x, int y){
         return this.grid[new Vector2Int(x,y)];
     }
