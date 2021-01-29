@@ -8,6 +8,7 @@ public class Map : MonoBehaviour {
 
     public static Map Instance { get { return _instance; } }
 
+    public TileMapController tileMap;
 
     private void Awake()
     {
@@ -39,7 +40,7 @@ public class Map : MonoBehaviour {
         for (int i = 0; i < this.mapSize; i++) {
             for (int j = 0; j < this.mapSize; j++) {
                 Vector2Int vector = new Vector2Int(i, j);
-                this.grid.Add(vector, "a");
+                this.grid.Add(vector, "D");
             }
         }
     }
@@ -48,7 +49,7 @@ public class Map : MonoBehaviour {
         int x = Random.Range(0,this.mapSize);
         int y = Random.Range(0,this.mapSize);
 
-        this.grid[new Vector2Int(x, y)] = "T";
+        this.grid[new Vector2Int(x, y)] = "H";
 
         Debug.Log($"treasure is in {x},{y}: {this.getTileInfo(x,y)}");
 
@@ -61,6 +62,19 @@ public class Map : MonoBehaviour {
 
     public string getTileInfo(int x, int y){
         return this.grid[new Vector2Int(x,y)];
+    }
+
+    public void populateMap(){
+
+    }
+    public int getMapSize()
+    {
+        return this.mapSize;
+    }
+
+    public void setMapSize(int mapSize)
+    {
+        this.mapSize = mapSize;
     }
 
 
