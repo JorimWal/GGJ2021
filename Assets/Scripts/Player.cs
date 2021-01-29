@@ -46,9 +46,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    public Vector2Int moveWorker (string instructions){
+    public List<Vector2Int> moveWorker (string instructions){
         
         Vector2Int workerPosition = this.position;
+
+        List<Vector2Int> path = new List<Vector2Int>();
 
         foreach (char instruction in instructions.ToCharArray()) {
             switch(instruction) {
@@ -69,27 +71,47 @@ public class Player : MonoBehaviour
                     break;
             }
             Debug.Log($"Worker moved to {workerPosition}");
-            this.checkForWorkerDeath();
+            path.Add(workerPosition);
         }
-        return workerPosition;
+        return path;
     }
 
-    private void checkForWorkerDeath(){
-        //TODO: did the worker die?
+    private bool checkForWorkerDeath(List<Vector2Int> path){
+        Dictionary<Vector2Int, string> grid = Map.Instance.getGrid();
+        foreach(Vector2Int coord in path)
+        {
+            //Nodes outside of map kill workers
+            if (!grid.ContainsKey(coord))
+                return true;
+            //Death nodes kill workers
+            if (grid[coord] == "D")
+                return true;
+        }
+        //If no traveled tiles cause death, the worker is not dead
+        return false;
     }
 
     public void dig(){
         Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
-        Vector2Int workerPosition = this.moveWorker(input);
-        string tileInfo = Map.Instance.getTileInfo(workerPosition);
-        Debug.Log($"We found out : {tileInfo}");
+        List<Vector2Int> path = moveWorker(input);
+        Vector2Int workerPosition = path[path.Count - 1];
+        if (checkForWorkerDeath(path))
+        { }
+        else
+        {
+            //If the worker does not die
+            string tileInfo = Map.Instance.getTileInfo(workerPosition);
+            Debug.Log($"We found out : {tileInfo}");
 
-        if(tileInfo.Equals("_")){
-            Map.Instance.markOnMap(workerPosition, "H");
-        }
+            if (tileInfo.Equals("_"))
+            {
+                Map.Instance.markOnMap(workerPosition, "H");
+            }
 
-        if(tileInfo.Equals("D")){
-            this.win();
+            if (tileInfo.Equals("T"))
+            {
+                this.win();
+            }
         }
     }
 

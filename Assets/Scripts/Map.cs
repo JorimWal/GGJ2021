@@ -44,8 +44,8 @@ public class Map : MonoBehaviour {
     }
 
     private void createMap(){
-        for (int i = 0; i < this.mapSize; i++) {
-            for (int j = 0; j < this.mapSize; j++) {
+        for (int i = 0; i < mapSize; i++) {
+            for (int j = 0; j < mapSize; j++) {
                 Vector2Int vector = new Vector2Int(i, j);
                 this.grid.Add(vector, "_");
             }
@@ -53,10 +53,10 @@ public class Map : MonoBehaviour {
     }
     private void setFinishTarget()
     {
-        int x = Random.Range(0,this.mapSize);
-        int y = Random.Range(0,this.mapSize);
+        int x = Random.Range(0, mapSize);
+        int y = Random.Range(0, mapSize);
 
-        this.grid[new Vector2Int(x, y)] = "D";
+        this.grid[new Vector2Int(x, y)] = "T";
 
         Debug.Log($"treasure is in {x},{y}: {this.getTileInfo(x,y)}");
 
@@ -64,8 +64,8 @@ public class Map : MonoBehaviour {
 
     private void setPlayer()
     {
-        int x = Random.Range(0, this.mapSize);
-        int y = Random.Range(0, this.mapSize);
+        int x = Random.Range(0, mapSize);
+        int y = Random.Range(0, mapSize);
 
         Vector2Int playerPosition = new Vector2Int(x, y);
 
@@ -97,7 +97,7 @@ public class Map : MonoBehaviour {
     }
     public int getMapSize()
     {
-        return this.mapSize;
+        return mapSize;
     }
 
     public void setMapSize(int mapSize)
