@@ -348,7 +348,6 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &1276270736
@@ -1154,6 +1153,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5853588708744578805, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
+      propertyPath: tileMapController
+      value: 
+      objectReference: {fileID: 1566731352}
     - target: {fileID: 5853588708744578806, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
       propertyPath: m_Name
       value: GameManager

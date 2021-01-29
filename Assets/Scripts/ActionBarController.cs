@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class ActionBarController : MonoBehaviour
 {
+    //Singleton Instance
+    public static ActionBarController Instance;
+
     [HideInInspector]
     public string ActionInput {
         set {
@@ -46,6 +49,12 @@ public class ActionBarController : MonoBehaviour
 
     public void Start()
     {
+        //Singleton Instance
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         //Load the button sprites from resources
         up = Resources.Load<Sprite>("ActionButtons/UpArrowButton");
         down = Resources.Load<Sprite>("ActionButtons/DownArrowButton");
@@ -53,6 +62,6 @@ public class ActionBarController : MonoBehaviour
         right = Resources.Load<Sprite>("ActionButtons/RightArrowButton");
         empty = Resources.Load<Sprite>("ActionButtons/EmptyButton");
 
-        ActionInput = "ULLURD";
+        ActionInput = "";
     }
 }

@@ -5,14 +5,46 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-
+    string input = "";
     Vector2Int position;
 
-    void Start(){
+    void Start() {
         Debug.Log($"Created Player");
         this.position = Map.Instance.getPlayerPosition();
-    }  
+    }
 
+    void Update()
+    {
+        HandleInput();
+    }
+
+    void HandleInput()
+    {
+        string oldinput = input;
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            input += "U";
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            input += "D";
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            input += "L";
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            input += "R";
+
+        if (Input.GetKeyDown(KeyCode.Backspace))
+            input = input.Remove(input.Length - 1);
+
+        if(input != oldinput)
+        {
+            ActionBarController.Instance.ActionInput = input;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            dig();
+            input = "";
+            ActionBarController.Instance.ActionInput = "";
+        }
+    }
 
     public Vector2Int moveWorker (string instructions){
         
@@ -47,9 +79,8 @@ public class Player : MonoBehaviour
     }
 
     public void dig(){
-        string instructions = UIManager.Instance.getInstructions();
-        Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {instructions}");
-        Vector2Int workerPosition = this.moveWorker(instructions);
+        Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
+        Vector2Int workerPosition = this.moveWorker(input);
         string tileInfo = Map.Instance.getTileInfo(workerPosition);
         Debug.Log($"We found out : {tileInfo}");
 
@@ -60,7 +91,6 @@ public class Player : MonoBehaviour
         if(tileInfo.Equals("D")){
             this.win();
         }
-
     }
 
 
