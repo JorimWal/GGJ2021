@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     }  
 
 
-    public void executeInstructions (string instructions){
+    public Vector2Int moveWorker (string instructions){
         
         Vector2Int workerPosition = this.position;
 
@@ -39,8 +39,7 @@ public class Player : MonoBehaviour
             Debug.Log($"Worker moved to {workerPosition}");
             this.checkForWorkerDeath();
         }
-        Debug.Log($"We found out : {Map.Instance.getTileInfo(workerPosition)}");
-
+        return workerPosition;
     }
 
     private void checkForWorkerDeath(){
@@ -50,9 +49,24 @@ public class Player : MonoBehaviour
     public void dig(){
         string instructions = UIManager.Instance.getInstructions();
         Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {instructions}");
-        this.executeInstructions(instructions);
+        Vector2Int workerPosition = this.moveWorker(instructions);
+        string tileInfo = Map.Instance.getTileInfo(workerPosition);
+        Debug.Log($"We found out : {tileInfo}");
+
+        if(tileInfo.Equals("_")){
+            Map.Instance.markOnMap(workerPosition, "H");
+        }
+
+        if(tileInfo.Equals("D")){
+            this.win();
+        }
+
     }
 
+
+    public void win(){
+        Debug.Log($"YOU WIN!!!");
+    }
 
 
 

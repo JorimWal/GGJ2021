@@ -10,6 +10,8 @@ public class Map : MonoBehaviour {
 
     private Vector2Int playerPosition;
 
+    public TileMapController tileMapController;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -90,8 +92,8 @@ public class Map : MonoBehaviour {
     }
 
 
-    public void populateMap(){
-
+    public void markOnMap(Vector2Int position, string mark){
+        this.tileMapController.DrawTile(position, mark);
     }
     public int getMapSize()
     {
@@ -102,6 +104,9 @@ public class Map : MonoBehaviour {
     {
         this.mapSize = mapSize;
     }
+
+
+
 
 
 
