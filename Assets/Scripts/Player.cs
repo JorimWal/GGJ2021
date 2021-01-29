@@ -110,18 +110,18 @@ public class Player : MonoBehaviour
         else
         {
             //If the worker does not die
-            string tileInfo = Map.Instance.getTileInfo(workerPosition);
-            Debug.Log($"We found out : {tileInfo}");
-
-            if (tileInfo.Equals("_"))
+            //Reveal all tiles the worker walked
+            for(int i = 0; i < path.Count; i++)
             {
-                Map.Instance.Reveal(workerPosition);
+                Map.Instance.Reveal(path[i]);
+                if (Map.Instance.getTileInfo(path[i]) == "T")
+                    this.win();
             }
-
-            if (tileInfo.Equals("T"))
-            {
-                this.win();
-            }
+            //Reveal all tiles directly adjacent to the worker's final spot
+            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up);
+            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down);
+            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left);
+            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
         }
     }
 
