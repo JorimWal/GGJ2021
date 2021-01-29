@@ -199,6 +199,15 @@ public class Map : MonoBehaviour {
                 return false;
             }
         }
+        Debug.Log($"Treasure is in {this.treasurePosition}");
+        diff = Mathf.Abs(this.treasurePosition.sqrMagnitude - possibleDangerPosition.sqrMagnitude);
+        Debug.Log($"SQR MAGNITUDE DIFF IS {diff.ToString()}");
+        if (diff < 5)
+        {
+            Debug.Log($"DANGER IS TOO CLOSE TO TREASURE {diff.ToString()}");
+            return false;
+        }
+
         Debug.Log($"Player is in {this.playerPosition}");
         diff = Mathf.Abs(this.playerPosition.sqrMagnitude - possibleDangerPosition.sqrMagnitude);
         Debug.Log($"SQR MAGNITUDE DIFF IS {diff.ToString()}"); 
