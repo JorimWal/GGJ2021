@@ -24,9 +24,6 @@ public class Map : MonoBehaviour {
         }
         this.grid = new Dictionary<Vector2Int, string>();
         this.createMap();
-        this.setFinishTarget();
-        this.setPlayer();
-
     }
 
 
@@ -50,6 +47,9 @@ public class Map : MonoBehaviour {
                 this.grid.Add(vector, "_");
             }
         }
+
+        setFinishTarget();
+        setPlayer();
     }
     private void setFinishTarget()
     {
@@ -91,10 +91,20 @@ public class Map : MonoBehaviour {
         return this.grid[position];
     }
 
-
-    public void markOnMap(Vector2Int position, string mark){
-        this.tileMapController.DrawTile(position, mark);
+    public void Reveal(Vector2Int position)
+    {
+        if (!grid.ContainsKey(position))
+            return;
+        tileMapController.DrawTile(position, grid[position]);
     }
+
+    public void Hide(Vector2Int position)
+    {
+        if (!grid.ContainsKey(position))
+            return;
+        tileMapController.DrawTile(position, "_");
+    }
+
     public int getMapSize()
     {
         return mapSize;

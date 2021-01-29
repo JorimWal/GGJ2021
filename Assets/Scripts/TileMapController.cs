@@ -31,11 +31,10 @@ public class TileMapController : MonoBehaviour
         {
             for (int j = 0; j < mapSize; j++)
             {
-                string info = Map.Instance.getTileInfo(i,j);
-                this.DrawTile(i,j,info);
+                this.DrawTile(i,j,"QuestionMark");
             }
         }
-
+        DrawTile(Map.Instance.getPlayerPosition(), "P");
     }
 
     public void DrawTile(Vector2Int coord, string tile)

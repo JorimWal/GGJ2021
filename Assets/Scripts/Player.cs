@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
 
             if (tileInfo.Equals("_"))
             {
-                Map.Instance.markOnMap(workerPosition, "H");
+                Map.Instance.Reveal(workerPosition);
             }
 
             if (tileInfo.Equals("T"))
