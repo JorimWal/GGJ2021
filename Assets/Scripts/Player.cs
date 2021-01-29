@@ -5,14 +5,46 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-
+    string input = "";
     Vector2Int position;
 
-    void Start(){
+    void Start() {
         Debug.Log($"Created Player");
         this.position = Map.Instance.getPlayerPosition();
-    }  
+    }
 
+    void Update()
+    {
+        HandleInput();
+    }
+
+    void HandleInput()
+    {
+        string oldinput = input;
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            input += "U";
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            input += "D";
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            input += "L";
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            input += "R";
+
+        if (Input.GetKeyDown(KeyCode.Backspace))
+            input.Remove(input.Length - 1);
+
+        if(input != oldinput)
+        {
+            ActionBarController.Instance.ActionInput = input;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            dig();
+            input = "";
+            ActionBarController.Instance.ActionInput = "";
+        }
+    }
 
     public void executeInstructions (string instructions){
         
@@ -48,9 +80,8 @@ public class Player : MonoBehaviour
     }
 
     public void dig(){
-        string instructions = UIManager.Instance.getInstructions();
-        Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {instructions}");
-        this.executeInstructions(instructions);
+        Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
+        this.executeInstructions(input);
     }
 
 
