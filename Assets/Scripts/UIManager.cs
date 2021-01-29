@@ -29,9 +29,9 @@ public class UIManager : MonoBehaviour {
         this.workersLeft.text = $"Workers x {workersLeft}";
     }
 
-    public void setTurnsTaken(int turnsTaken)
+    public void setTurnsTaken(int turnsTaken, int turnsLeft)
     {
-        this.turnsTaken.text = $"Turns x {turnsTaken}";
+        this.turnsTaken.text = $"Turns : {turnsTaken} / {turnsLeft}";
     }
 
 
