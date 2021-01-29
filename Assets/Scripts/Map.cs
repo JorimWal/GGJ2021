@@ -8,7 +8,7 @@ public class Map : MonoBehaviour {
 
     public static Map Instance { get { return _instance; } }
 
-    public TileMapController tileMap;
+    private Vector2Int playerPosition;
 
     private void Awake()
     {
@@ -20,27 +20,32 @@ public class Map : MonoBehaviour {
         {
             _instance = this;
         }
+        this.grid = new Dictionary<Vector2Int, string>();
+        this.createMap();
+        this.setFinishTarget();
+        this.setPlayer();
+
     }
 
 
     public int mapSize = 10;
 
-    private Dictionary<Vector2Int, string> grid;  
+    private Dictionary<Vector2Int, string> grid;
+    public Vector2Int getPlayerPosition()
+    {
+        return this.playerPosition;
+    }
+
 
     void Start(){
-        this.grid = new Dictionary<Vector2Int, string>();
-        this.createMap();
-        Debug.Log("Map is " + this.grid);
-        this.setFinishTarget();
-        string tileInfo = this.getTileInfo(1,2);
-        Debug.Log("Tile info is " + tileInfo);
+
     }
 
     private void createMap(){
         for (int i = 0; i < this.mapSize; i++) {
             for (int j = 0; j < this.mapSize; j++) {
                 Vector2Int vector = new Vector2Int(i, j);
-                this.grid.Add(vector, "D");
+                this.grid.Add(vector, "_");
             }
         }
     }
@@ -49,12 +54,27 @@ public class Map : MonoBehaviour {
         int x = Random.Range(0,this.mapSize);
         int y = Random.Range(0,this.mapSize);
 
-        this.grid[new Vector2Int(x, y)] = "H";
+        this.grid[new Vector2Int(x, y)] = "D";
 
         Debug.Log($"treasure is in {x},{y}: {this.getTileInfo(x,y)}");
 
+    }
+
+    private void setPlayer()
+    {
+        int x = Random.Range(0, this.mapSize);
+        int y = Random.Range(0, this.mapSize);
+
+        Vector2Int playerPosition = new Vector2Int(x, y);
+
+        this.grid[playerPosition] = "P";
+
+        this.playerPosition = playerPosition;
+
+        Debug.Log($"Player is in {x},{y}: {this.getTileInfo(x, y)}");
 
     }
+
 
     public Dictionary<Vector2Int, string> getGrid(){
         return this.grid;
@@ -63,6 +83,12 @@ public class Map : MonoBehaviour {
     public string getTileInfo(int x, int y){
         return this.grid[new Vector2Int(x,y)];
     }
+
+    public string getTileInfo(Vector2Int position)
+    {
+        return this.grid[position];
+    }
+
 
     public void populateMap(){
 

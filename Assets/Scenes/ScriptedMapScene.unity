@@ -172,10 +172,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f7f23b46a8e7ee649a39ef5bf4deb778, type: 2}
   - {fileID: 11400000, guid: c61ef9d42ee618a4eb35f22d7a6eed67, type: 2}
   - {fileID: 11400000, guid: 12a47c71c771b164fa4094773a4adf0a, type: 2}
+  - {fileID: 11400000, guid: 2c92abeb6176cbe46b60a97f71bc1def, type: 2}
   TileValues:
   - H
   - P
   - D
+  - _
 --- !u!483693784 &168641474
 TilemapRenderer:
   m_ObjectHideFlags: 0

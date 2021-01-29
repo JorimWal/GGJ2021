@@ -9,8 +9,7 @@ public class UIManager : MonoBehaviour {
 
     public static UIManager Instance { get { return _instance; } }
 
-    public InputField xInput;
-    public InputField yInput;
+    public InputField instructionsInput;
 
 
     private void Awake()
@@ -25,11 +24,8 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public int getXValue(){
-        return int.Parse(this.xInput.text);
-    }
-    public int getYValue(){
-        return int.Parse(this.yInput.text);
+    public string getInstructions(){
+        return this.instructionsInput.text;
     }
 
 
