@@ -17,7 +17,12 @@ public class TileMapController : MonoBehaviour
         tileMapBehaviour = GetComponent<Tilemap>();
         //Clear the tiles on the tilemap
         clearTiles();
+
         int mapSize = Map.Instance.getMapSize();
+        //Move the map a little bit so it is centered, while keeping 0,0 at top left
+        float halfMapSize = mapSize / 2f;
+        transform.position = transform.position - new Vector3(halfMapSize, halfMapSize, 0);
+
         tileMapBehaviour.size = new Vector3Int(mapSize, mapSize, 0);
         
         FillTileMap();
