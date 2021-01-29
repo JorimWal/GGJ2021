@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour {
     public static UIManager Instance { get { return _instance; } }
 
     public Text workersLeft;
+    public Text turnsTaken;
 
 
     private void Awake()
@@ -25,7 +26,12 @@ public class UIManager : MonoBehaviour {
     }
 
     public void setWorkersLeft(int workersLeft){
-         this.workersLeft.text = workersLeft.ToString();
+        this.workersLeft.text = $"Workers x {workersLeft}";
+    }
+
+    public void setTurnsTaken(int turnsTaken)
+    {
+        this.turnsTaken.text = $"Turns x {turnsTaken}";
     }
 
 

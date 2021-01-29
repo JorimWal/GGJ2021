@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     string input = "";
     Vector2Int position;
 
+    public int turnsTaken = 0;
     public int workersLeft = 5;
 
     void Start() {
@@ -95,16 +96,16 @@ public class Player : MonoBehaviour
     }
 
     public void dig(){
+        turnsTaken++;
         Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
         List<Vector2Int> path = moveWorker(input);
         Vector2Int workerPosition = path[path.Count - 1];
         if (checkForWorkerDeath(path)) { 
             this.workersLeft--;
-            if(workersLeft <= 0){
+            Debug.Log($"{this}: LOST A WORKER: WORKERS LEFT {workersLeft}");
+            UIManager.Instance.setWorkersLeft(this.workersLeft);
+            if (workersLeft <= 0){
                 this.gameOver();
-            } else {
-                Debug.Log($"{this}: LOST A WORKER: WORKERS LEFT {workersLeft}");
-                UIManager.Instance.setWorkersLeft(this.workersLeft);
             }
         }
         else
