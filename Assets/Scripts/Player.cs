@@ -9,12 +9,14 @@ public class Player : MonoBehaviour
     Vector2Int position;
 
     public int turnsTaken = 0;
+    public int turnslimit = 15;
     public int workersLeft = 5;
 
     void Start() {
         Debug.Log($"Created Player");
         this.position = Map.Instance.getPlayerPosition();
         UIManager.Instance.setWorkersLeft(this.workersLeft);
+        UIManager.Instance.setTurnsTaken(this.turnsTaken, turnslimit);
     }
 
     void Update()
@@ -48,6 +50,7 @@ public class Player : MonoBehaviour
             input = "";
             ActionBarController.Instance.ActionInput = "";
         }
+
     }
 
     public List<Vector2Int> moveWorker (string instructions){
@@ -96,7 +99,6 @@ public class Player : MonoBehaviour
     }
 
     public void dig(){
-        turnsTaken++;
         Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
         List<Vector2Int> path = moveWorker(input);
         Vector2Int workerPosition = path[path.Count - 1];
@@ -124,6 +126,17 @@ public class Player : MonoBehaviour
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left);
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
         }
+        this.checkForTurns();
+
+    }
+
+    private void checkForTurns(){
+        turnsTaken++;
+        UIManager.Instance.setTurnsTaken(this.turnsTaken, turnslimit);
+        if(turnsTaken > turnslimit){
+            this.gameOver();
+        }
+
     }
 
 
