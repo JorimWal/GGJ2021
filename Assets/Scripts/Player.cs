@@ -8,9 +8,12 @@ public class Player : MonoBehaviour
     string input = "";
     Vector2Int position;
 
+    public int workersLeft = 5;
+
     void Start() {
         Debug.Log($"Created Player");
         this.position = Map.Instance.getPlayerPosition();
+        UIManager.Instance.setWorkersLeft(this.workersLeft);
     }
 
     void Update()
@@ -95,8 +98,15 @@ public class Player : MonoBehaviour
         Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
         List<Vector2Int> path = moveWorker(input);
         Vector2Int workerPosition = path[path.Count - 1];
-        if (checkForWorkerDeath(path))
-        { }
+        if (checkForWorkerDeath(path)) { 
+            this.workersLeft--;
+            if(workersLeft <= 0){
+                this.gameOver();
+            } else {
+                Debug.Log($"{this}: LOST A WORKER: WORKERS LEFT {workersLeft}");
+                UIManager.Instance.setWorkersLeft(this.workersLeft);
+            }
+        }
         else
         {
             //If the worker does not die
@@ -120,6 +130,9 @@ public class Player : MonoBehaviour
         Debug.Log($"YOU WIN!!!");
     }
 
+    public void gameOver(){
+        Debug.Log($"YOU LOSE!!!");
+    }
 
 
 }

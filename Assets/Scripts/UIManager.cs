@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour {
 
     public static UIManager Instance { get { return _instance; } }
 
-    public InputField instructionsInput;
+    public Text workersLeft;
 
 
     private void Awake()
@@ -24,8 +24,8 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public string getInstructions(){
-        return this.instructionsInput.text;
+    public void setWorkersLeft(int workersLeft){
+         this.workersLeft.text = workersLeft.ToString();
     }
 
 
