@@ -8,22 +8,19 @@ public class TileMapController : MonoBehaviour
 {
     Tilemap tileMapBehaviour;
 
-    [Tooltip("Types of tiles")]
-    public List<Tile> Tiles;
-    [Tooltip("String value of tiles")]
-    public List<string> TileValues;
+    Dictionary<string, Tile> tiles;
     public void Start()
     {
+        //Load all necessary resources
+        tiles = LoadResources();
         //Retrieve the tilemap component on this object
         tileMapBehaviour = GetComponent<Tilemap>();
-        this.clearTiles();
+        //Clear the tiles on the tilemap
+        clearTiles();
         int mapSize = Map.Instance.getMapSize();
         tileMapBehaviour.size = new Vector3Int(mapSize, mapSize, 0);
-        // //TEST: fill tilemap with first element
-        // Dictionary<Vector2Int, string> testDict = new Dictionary<Vector2Int, string>();
-        // testDict.Add(new Vector2Int(0, 0), "H");
         
-        this.FillTileMap();
+        FillTileMap();
     }
 
     public void FillTileMap()
@@ -43,15 +40,26 @@ public class TileMapController : MonoBehaviour
 
     public void DrawTile(Vector2Int coord, string tile)
     {
-        tileMapBehaviour.SetTile(new Vector3Int(coord.x, coord.y, 0), Tiles[TileValues.IndexOf(tile)]);
+        tileMapBehaviour.SetTile(new Vector3Int(coord.x, coord.y, 0), tiles[tile]);
     }
 
     public void DrawTile(int x, int y, string tile)
     {
-        tileMapBehaviour.SetTile(new Vector3Int(x, y, 0), Tiles[TileValues.IndexOf(tile)]);
+        tileMapBehaviour.SetTile(new Vector3Int(x, y, 0), tiles[tile]);
     }
 
     public void clearTiles(){
         this.tileMapBehaviour.ClearAllTiles();
+    }
+
+    public Dictionary<string, Tile> LoadResources()
+    {
+        Dictionary<string, Tile> output = new Dictionary<string, Tile>();
+        Tile[] resources = Resources.LoadAll<Tile>("Tilemap/Tiles");
+        foreach(Tile tile in resources)
+        {
+            output.Add(tile.name, tile);
+        }
+        return output;
     }
 }
