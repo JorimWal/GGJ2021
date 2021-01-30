@@ -233,6 +233,11 @@ public class Map : MonoBehaviour {
         tileMapController.DrawTile(position, TileType.TileTypes.BRIDGE);
     }
 
+    public void chopForest(Vector2Int position){
+        this.grid[position] = TileType.TileTypes.CHOPPED_FOREST;
+        tileMapController.DrawTile(position, TileType.TileTypes.CHOPPED_FOREST);
+    }
+
 
     public Dictionary<Vector2Int, TileType.TileTypes> getGrid(){
         return this.grid;

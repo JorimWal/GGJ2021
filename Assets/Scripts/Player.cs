@@ -171,6 +171,7 @@ public class Player : MonoBehaviour
             if(grid[path[path.Count - 1]] == TileType.TileTypes.FOREST){
                 Debug.Log($"WOOD GATHERED FROM THIS TILE {path[path.Count - 1]}");
                 woodPieces++;
+                Map.Instance.chopForest(path[path.Count - 1]);
                 UIManager.Instance.setWoodCounter(this.woodPieces);
             }
 
