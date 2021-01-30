@@ -58,13 +58,14 @@ public class ActionBarController : MonoBehaviour
         else
             Destroy(gameObject);
 
+        empty = Resources.Load<Sprite>("ActionButtons/Transparent");
         //Load the button sprites from resources
-        up = Resources.Load<Sprite>("ActionButtons/UpArrowButton");
-        down = Resources.Load<Sprite>("ActionButtons/DownArrowButton");
-        left = Resources.Load<Sprite>("ActionButtons/LeftArrowButton");
-        right = Resources.Load<Sprite>("ActionButtons/RightArrowButton");
-        empty = Resources.Load<Sprite>("ActionButtons/EmptyButton");
-        dig = Resources.Load<Sprite>("ActionButtons/DigButton");
+        Sprite[] spriteSheet = Resources.LoadAll<Sprite>("ActionButtons/Tiles");
+        up = spriteSheet[13];
+        down = spriteSheet[15];
+        left = spriteSheet[12];
+        right = spriteSheet[14];
+        dig = spriteSheet[2];
 
         ActionInput = "";
     }
