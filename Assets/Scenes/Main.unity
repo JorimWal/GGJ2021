@@ -3177,6 +3177,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1529837166 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 891684835017664993, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
+  m_PrefabInstance: {fileID: 8795050989182043049}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1566731350
 GameObject:
   m_ObjectHideFlags: 0
@@ -4023,6 +4034,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1066228223}
     - target: {fileID: 5853588708744578763, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
+      propertyPath: woodCounter
+      value: 
+      objectReference: {fileID: 1529837166}
+    - target: {fileID: 5853588708744578763, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
       propertyPath: workersLeft
       value: 
       objectReference: {fileID: 1738983831}
@@ -4311,6 +4326,22 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2055515315}
+    - target: {fileID: 8312379547996472083, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8312379547996472083, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8312379547996472083, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8312379547996472083, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8795050989750923744, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
       propertyPath: m_Pivot.x
       value: 0

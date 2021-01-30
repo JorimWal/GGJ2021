@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
         this.position = Map.Instance.getPlayerPosition();
         UIManager.Instance.setWorkersLeft(this.workersLeft);
         UIManager.Instance.setTurnsTaken(this.turnsTaken, turnslimit);
+        UIManager.Instance.setWoodCounter(this.woodPieces);
     }
 
     void Update()
