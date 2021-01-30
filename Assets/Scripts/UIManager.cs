@@ -16,8 +16,6 @@ public class UIManager : MonoBehaviour {
 
     public GameObject actionBar;
 
-    public GameObject actionsButtons;
-
     Dictionary<string, Tile> tiles;
 
 

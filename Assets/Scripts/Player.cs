@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
         this.position = Map.Instance.getPlayerPosition();
         UIManager.Instance.setWorkersLeft(this.workersLeft);
         UIManager.Instance.setTurnsTaken(this.turnsTaken, turnslimit);
+
+        textUI.SetContent("Search around the island and Dig at the spot on the treasure map");
     }
 
     void Update()
@@ -132,14 +134,18 @@ public class Player : MonoBehaviour
         }
         else
         {
+            bool won = false;
             //If the worker does not die
             //Reveal all tiles the worker walked
             for(int i = 0; i < path.Count; i++)
             {
                 Map.Instance.Reveal(path[i]);
                 //You win if digging on the victory tile
-                if (Map.Instance.treasurePosition == path[path.Count-1] && input[input.Length-1] == 'F')
+                if (Map.Instance.treasurePosition == path[path.Count - 1] && input[input.Length - 1] == 'F')
+                {
                     this.win();
+                    won = true;
+                }
             }
             //Reveal all tiles directly adjacent to the worker's final spot
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up);
@@ -147,7 +153,8 @@ public class Player : MonoBehaviour
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left);
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
 
-            textUI.SetContent("Your worker brings new insight of your surroundings");
+            if(!won)
+                textUI.SetContent("Your worker brings new insight of your surroundings");
         }
         this.checkForTurns();
         //Empty the action bar for new inputs

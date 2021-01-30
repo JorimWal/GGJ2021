@@ -29,16 +29,7 @@ public class Map : MonoBehaviour {
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-        }
-        this.grid = new Dictionary<Vector2Int, TileType.TileTypes>();
-        this.createMap();
+
     }
 
 
@@ -55,7 +46,16 @@ public class Map : MonoBehaviour {
 
 
     void Start(){
-
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+        this.grid = new Dictionary<Vector2Int, TileType.TileTypes>();
+        this.createMap();
     }
 
     private void createMap(){
