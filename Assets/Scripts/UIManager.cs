@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 public class UIManager : MonoBehaviour {
 
@@ -11,7 +12,9 @@ public class UIManager : MonoBehaviour {
 
     public Text workersLeft;
     public Text turnsTaken;
+    public Tilemap clueTileMap;
 
+    Dictionary<string, Tile> tiles;
 
     private void Awake()
     {
@@ -34,5 +37,32 @@ public class UIManager : MonoBehaviour {
         this.turnsTaken.text = $"Turns : {turnsTaken} / {turnsLeft}";
     }
 
+    public void setClue(Dictionary<Vector2Int, string> clueGrid){
+        tiles = this.LoadResources();
+        this.clueTileMap.ClearAllTiles();
+        int clueSize = Map.Instance.getClueSizeFromTreasure() * 3;
+        this.clueTileMap.size = new Vector3Int(clueSize,clueSize,0);
+        Debug.Log($"Setting ClueMap");
+
+        for (int i = 0; i < clueSize; i++)
+        {
+            for (int j = 0; j < clueSize; j++)
+            {
+                Vector2Int vector = new Vector2Int(i, j);
+                this.clueTileMap.SetTile(new Vector3Int(i, j, 0), tiles[clueGrid[vector]]);
+            }
+        }
+    }
+
+    public Dictionary<string, Tile> LoadResources()
+    {
+        Dictionary<string, Tile> output = new Dictionary<string, Tile>();
+        Tile[] resources = Resources.LoadAll<Tile>("Tilemap/Tiles");
+        foreach (Tile tile in resources)
+        {
+            output.Add(tile.name, tile);
+        }
+        return output;
+    }
 
 }

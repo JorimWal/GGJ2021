@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Map : MonoBehaviour {
 
 
     public int mapSize = 10;
 
     public int deathTiles = 5;
+
+    public int clueSizeFromTreasure = 1;
 
     public const int MAX_TRIES_FOR_MAP_GENERATION = 5;
 
@@ -38,6 +39,10 @@ public class Map : MonoBehaviour {
     }
 
 
+    public int getClueSizeFromTreasure()
+    {
+        return this.clueSizeFromTreasure;
+    }
 
     private Dictionary<Vector2Int, string> grid;
     public Vector2Int getPlayerPosition()
@@ -65,6 +70,7 @@ public class Map : MonoBehaviour {
         for (int i = 0; i < this.deathTiles; i++) {
             setDanger();
         }
+        setClue();
     }
     private void setFinishTarget()
     {
@@ -73,12 +79,12 @@ public class Map : MonoBehaviour {
 
         Vector2Int position = new Vector2Int(x, y);
 
-        this.grid[position] = "T";
         this.treasurePosition = position;
 
         Debug.Log($"treasure is in {x},{y}: {this.getTileInfo(x,y)}");
 
     }
+
 
     private void setPlayer()
     {
@@ -101,7 +107,6 @@ public class Map : MonoBehaviour {
         this.playerPosition = playerPosition;
 
         Debug.Log($"Player is in {playerPosition}: {this.getTileInfo(playerPosition)}");
-
     }    
     
     private void setDanger()
@@ -140,7 +145,12 @@ public class Map : MonoBehaviour {
 
     public string getTileInfo(Vector2Int position)
     {
-        return this.grid[position];
+        try{
+            return this.grid[position];
+        } catch(KeyNotFoundException ex) {
+            Debug.Log($"Position {position} is out of the limits for this grid. Returning X");
+            return "X"; 
+        }
     }
 
     public void Reveal(Vector2Int position)
@@ -174,6 +184,11 @@ public class Map : MonoBehaviour {
                 tileMapController.DrawTile(vector, grid[vector]);
             }
         }
+    }
+
+    public void revealTreasure(){
+        Vector2Int position = this.treasurePosition;
+        tileMapController.DrawTile(position, "T");
     }
 
     private bool isPlayerTheoricalSpawnPositionCorrect(Vector2Int possiblePlayerPosition){
@@ -216,6 +231,30 @@ public class Map : MonoBehaviour {
             return false;
         }
         return true;
+    }
+
+    public void setClue(){
+        Dictionary<Vector2Int, string> clueGrid = new Dictionary<Vector2Int, string>();
+        
+        Vector2Int position = this.treasurePosition;
+
+        for (int i = -this.clueSizeFromTreasure; i <= this.clueSizeFromTreasure; i++)
+        {
+            for (int j = -this.clueSizeFromTreasure; j <= this.clueSizeFromTreasure; j++) {
+
+                Vector2Int vector = this.treasurePosition + new Vector2Int(i, j);
+                
+                string info = getTileInfo(vector);
+                if (i == 0 && j == 0)
+                {
+                    info = "T";
+                }
+                
+                clueGrid.Add(new Vector2Int(i + this.clueSizeFromTreasure,j + this.clueSizeFromTreasure),info);
+            }
+        }
+
+        UIManager.Instance.setClue(clueGrid);
     }
 
 
