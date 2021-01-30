@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagement : MonoBehaviour
 {
-    public void SwitchScene(int index)
+    public static void SwitchScene(int index)
     {
         SceneManager.LoadScene(index);
     }
 
-    public void SwitchScene(string name)
+    public static void SwitchScene(string name)
     {
         SceneManager.LoadScene(name);
     }

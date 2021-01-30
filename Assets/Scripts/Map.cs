@@ -18,18 +18,21 @@ public class Map : MonoBehaviour {
 
     private static Map _instance;
 
+    public MapType map = MapType.Random;
+
     public static Map Instance { get { return _instance; } }
 
     private Vector2Int playerPosition;
     private Vector2Int cursorPosition;
     public Vector2Int treasurePosition;
 
-
     private List<Vector2Int> dangerPositions;
 
     public TileMapController tileMapController;
 
     private UIManager uIManager;
+
+    public TextBubble textBubble;
 
     private void Awake()
     {
@@ -44,7 +47,7 @@ public class Map : MonoBehaviour {
         if(this.grid == null) {
             this.grid = new Dictionary<Vector2Int, TileType.TileTypes>();
             this.uIManager = GetComponent<UIManager>();
-            this.createMap();
+            this.createMap(map);
         }
     }
 
@@ -73,37 +76,74 @@ public class Map : MonoBehaviour {
         if (this.grid == null)
         {
             this.grid = new Dictionary<Vector2Int, TileType.TileTypes>();
-            this.createMap();
+            this.createMap(map);
         }
     }
 
-    private void createMap(){
-       
-        for (int i = 0; i < mapSize; i++) {
-            for (int j = 0; j < mapSize; j++) {
-                Vector2Int vector = new Vector2Int(i, j);
-                this.grid.Add(vector, TileType.TileTypes.NORMAL);
-            }
-        }
-        
-        setFinishTarget();
-        setPlayer();
-        for (int i = 0; i < this.forestTiles; i++)
+    public enum MapType { Random, Tutorial1}
+
+    private void createMap(MapType mapType = MapType.Random) {
+        switch (mapType)
         {
-            putForestInTheMap();
-        }
-        for (int i = 0; i < this.desertTiles; i++) {
-            putDesertInTheMap();
-        }
-        for (int i = 0; i < this.riverTiles; i++) {
-            putRiverInTheMap();
-        }
-        for (int i = 0; i < this.mountainTiles; i++) {
-            putMountainInTheMap();
+            case MapType.Tutorial1:
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        Vector2Int vector = new Vector2Int(i, j);
+                        this.grid.Add(vector, TileType.TileTypes.NORMAL);
+                    }
+                }
+                grid[new Vector2Int(0, 0)] = TileType.TileTypes.PLAYER;
+                grid[new Vector2Int(5, 9)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(5, 8)] = TileType.TileTypes.TREASURE;
+                this.treasurePosition = new Vector2Int(5, 8);
+                textBubble.SetContent("Captain's Log, day 29. It has been near a month since we set out", queueMessage: true);
+                textBubble.SetContent("to find the City of Gold that the locals assured us could not be found.", queueMessage: true);
+                textBubble.SetContent("Ofcourse something as trivial as 'being made up entirely by you' isn't", queueMessage: true);
+                textBubble.SetContent("going to stop a grand explorer, such as myself! I have been told that", queueMessage: true);
+                textBubble.SetContent("the first clue to El Dorado is buried south of the great lonesome Forest.", queueMessage: true);
+                textBubble.SetContent("Honestly with a charting system like this no wonder they never found the damn place", queueMessage: true);
+                textBubble.SetContent("I should send some men out to go look for this tree. And instruct them to dig", queueMessage: true);
+                textBubble.SetContent("south of the Forest. P.S. I should remember to give the directions", queueMessage : true);
+                textBubble.SetContent("step by step, these men get lost so easily.", queueMessage : true);
+
+                setClue();
+                break;
+            default:
+                for (int i = 0; i < mapSize; i++)
+                {
+                    for (int j = 0; j < mapSize; j++)
+                    {
+                        Vector2Int vector = new Vector2Int(i, j);
+                        this.grid.Add(vector, TileType.TileTypes.NORMAL);
+                    }
+                }
+
+                setFinishTarget();
+                setPlayer();
+                for (int i = 0; i < this.forestTiles; i++)
+                {
+                    putForestInTheMap();
+                }
+                for (int i = 0; i < this.desertTiles; i++)
+                {
+                    putDesertInTheMap();
+                }
+                for (int i = 0; i < this.riverTiles; i++)
+                {
+                    putRiverInTheMap();
+                }
+                for (int i = 0; i < this.mountainTiles; i++)
+                {
+                    putMountainInTheMap();
+                }
+
+                textBubble.SetContent("Search around the island and Dig at the spot on the treasure map");
+                setClue();
+                break;
         }
 
-
-        setClue();
     }
     private void setFinishTarget()
     {

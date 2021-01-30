@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
         UIManager.Instance.setWorkersLeft(this.workersLeft);
         UIManager.Instance.setTurnsTaken(this.turnsTaken, turnslimit);
         UIManager.Instance.setWoodCounter(this.woodPieces);
-        textUI.SetContent("Search around the island and Dig at the spot on the treasure map");
     }
 
     void Update()
@@ -154,19 +153,18 @@ public class Player : MonoBehaviour
             for(int i = 0; i < path.Count; i++)
             {
                 Map.Instance.Reveal(path[i]);
-                //You win if digging on the victory tile
-                if (Map.Instance.treasurePosition == path[path.Count - 1] && input[input.Length - 1] == 'F')
-                {
-                    this.win();
-                    won = true;
-                }
+            }
+            //You win if digging on the victory tile
+            if (Map.Instance.treasurePosition == path[path.Count - 1] && input[input.Length - 1] == 'F')
+            {
+                this.win();
+                won = true;
             }
             //Reveal all tiles directly adjacent to the worker's final spot
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up);
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down);
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left);
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
-            textUI.SetContent("Your worker brings new insight of your surroundings");
             if(grid[path[path.Count - 1]] == TileType.TileTypes.FOREST){
                 Debug.Log($"WOOD GATHERED FROM THIS TILE {path[path.Count - 1]}");
                 woodPieces++;
@@ -213,8 +211,7 @@ public class Player : MonoBehaviour
     }
     public void win(){
         Debug.Log($"YOU WIN!!!");
-        Color gold = new Color(1, 195f / 255f, 18f / 255f);
-        textUI.SetContent("After countless hours of digging, your workers spot a glint of gold. You have found the golden city El Dorado!", gold.r, gold.g, gold.b);
+        DialogueController.Instance.VictoryMessage();
     }
 
     public void gameOver(){
