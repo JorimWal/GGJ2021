@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     public int turnslimit = 15;
     public int workersLeft = 5;
 
+    public List<Item> items = new List<Item>();
+
     public TextBubble textUI;
     public int woodPieces = 0;
 
@@ -137,6 +139,14 @@ public class Player : MonoBehaviour
         if (checkForWorkerDeath(path)) { 
             this.workersLeft--;
             Debug.Log($"{this}: LOST A WORKER: WORKERS LEFT {workersLeft}");
+
+            if(this.doIHaveItem(Item.ItemKind.FLYING_PIDGEON) != null){
+                //I have the flying pidgeon so the path is marked anyways.
+                for (int i = 0; i < path.Count; i++) {
+                    Map.Instance.Reveal(path[i]);
+                }
+            }
+
             UIManager.Instance.setWorkersLeft(this.workersLeft);
             if (workersLeft <= 0){
                 textUI.SetContent("All your workers have perished, your search is over", red.r, red.g, red.b);
@@ -173,11 +183,19 @@ public class Player : MonoBehaviour
                 woodPieces++;
                 Map.Instance.chopForest(path[path.Count - 1]);
                 UIManager.Instance.setWoodCounter(this.woodPieces);
+            } else if(grid[path[path.Count - 1]] == TileType.TileTypes.CHEST) {
+                Debug.Log($"ITEM GOT FROM THIS CHEST {path[path.Count - 1]}");
+                Item gotItem = Map.Instance.openChest(path[path.Count - 1]);
+                Debug.Log($"YOU GOT {gotItem.getName()}");
+                this.items.Add(gotItem);
+                
+                //TODO: UIManager.Instance.setInventary(this.items);
+
             }
 
            if(!won)
                 textUI.SetContent("Your worker brings new insight of your surroundings");
- }
+        }
         this.checkForTurns();
         //Empty the action bar for new inputs
         input = "";
@@ -251,6 +269,16 @@ public class Player : MonoBehaviour
                 break;
         }
         return false;
+    }
+
+    public Item doIHaveItem(Item.ItemKind kind){
+        Item item = null;
+        foreach (Item itemHold in this.items) {
+            if(itemHold.getKind() == kind){
+                item = itemHold;
+            }
+        }
+        return item;
     }
 
 

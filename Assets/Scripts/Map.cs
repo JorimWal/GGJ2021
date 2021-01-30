@@ -7,7 +7,7 @@ public class Map : MonoBehaviour {
     
     public int mapSize = 10;
     public int forestTiles = 7;
-
+    public int chestsTiles = 1;
     public int desertTiles = 3;
     public int riverTiles = 5;
     public int mountainTiles = 4;
@@ -100,6 +100,9 @@ public class Map : MonoBehaviour {
         }
         for (int i = 0; i < this.mountainTiles; i++) {
             putMountainInTheMap();
+        }
+        for (int i = 0; i < this.chestsTiles; i++) {
+            putChestInTheMap();
         }
 
 
@@ -227,6 +230,27 @@ public class Map : MonoBehaviour {
         Debug.Log($"Mountain added in {position}");
 
     }
+    private void putChestInTheMap(){
+        int tries = 0;
+        Vector2Int position;
+        do
+        {
+            int x = UnityEngine.Random.Range(0, mapSize);
+            int y = UnityEngine.Random.Range(0, mapSize);
+            position = new Vector2Int(x, y);
+            tries++;
+
+            if (tries > MAX_TRIES_FOR_MAP_GENERATION)
+            {
+                throw new System.Exception("MAX NUMBER OF MAP GENERATION TRIES REACHED");
+            }
+
+        } while (!this.isChestTheoricalMountainPositionCorrect(position));
+
+        this.grid[position] = TileType.TileTypes.CHEST;
+        Debug.Log($"Chest added in {position}");
+
+    }
 
     public void buildBridge(Vector2Int position){
         this.grid[position] = TileType.TileTypes.BRIDGE;
@@ -236,6 +260,11 @@ public class Map : MonoBehaviour {
     public void chopForest(Vector2Int position){
         this.grid[position] = TileType.TileTypes.CHOPPED_FOREST;
         tileMapController.DrawTile(position, TileType.TileTypes.CHOPPED_FOREST);
+    }
+    public Item openChest(Vector2Int position){
+        this.grid[position] = TileType.TileTypes.OPEN_CHEST;
+        tileMapController.DrawTile(position, TileType.TileTypes.OPEN_CHEST);
+        return Item.createItem(Item.ItemKind.FLYING_PIDGEON);
     }
 
 
@@ -362,6 +391,9 @@ public class Map : MonoBehaviour {
         return (this.treasurePosition != possibleRiverPosition && this.getTileInfo(possibleRiverPosition) == TileType.TileTypes.NORMAL);
     }
     private bool isMountainTheoricalMountainPositionCorrect(Vector2Int possibleMountainPosition) {
+        return (this.treasurePosition != possibleMountainPosition && this.getTileInfo(possibleMountainPosition) == TileType.TileTypes.NORMAL);
+    }
+    private bool isChestTheoricalMountainPositionCorrect(Vector2Int possibleMountainPosition) {
         return (this.treasurePosition != possibleMountainPosition && this.getTileInfo(possibleMountainPosition) == TileType.TileTypes.NORMAL);
     }
 
