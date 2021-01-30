@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public int turnslimit = 15;
     public int workersLeft = 5;
 
+    public TextBubble textUI;
     public int woodPieces = 0;
 
     void Start() {
@@ -128,12 +129,19 @@ public class Player : MonoBehaviour
             return;
         Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
         List<Vector2Int> path = moveWorker(input);
+        //UI color
+        Color red = new Color(234f / 255f, 32f / 255f, 39f / 255f);
         if (checkForWorkerDeath(path)) { 
             this.workersLeft--;
             Debug.Log($"{this}: LOST A WORKER: WORKERS LEFT {workersLeft}");
             UIManager.Instance.setWorkersLeft(this.workersLeft);
             if (workersLeft <= 0){
+                textUI.SetContent("All your workers have perished, your search is over", red.r, red.g, red.b);
                 this.gameOver();
+            }
+            else
+            {
+                textUI.SetContent("Your worker did not return from their expedition", red.r, red.g, red.b);
             }
         }
         else
@@ -152,7 +160,7 @@ public class Player : MonoBehaviour
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down);
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left);
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
-
+            textUI.SetContent("Your worker brings new insight of your surroundings");
             if(grid[path[path.Count - 1]] == TileType.TileTypes.FOREST){
                 Debug.Log($"WOOD GATHERED FROM THIS TILE {path[path.Count - 1]}");
                 woodPieces++;
@@ -186,6 +194,8 @@ public class Player : MonoBehaviour
     }
     public void win(){
         Debug.Log($"YOU WIN!!!");
+        Color gold = new Color(1, 195f / 255f, 18f / 255f);
+        textUI.SetContent("After countless hours of digging, your workers spot a glint of gold. You have found the golden city El Dorado!", gold.r, gold.g, gold.b);
     }
 
     public void gameOver(){
