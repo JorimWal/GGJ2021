@@ -19,12 +19,6 @@ public class UIManager : MonoBehaviour {
     public GameObject actionsButtons;
 
     Dictionary<string, Tile> tiles;
-    private bool recievingInput = false;
-
-    public bool isRecievingInput()
-    {
-        return this.recievingInput;
-    }
 
 
     private void Awake()
@@ -63,19 +57,6 @@ public class UIManager : MonoBehaviour {
                 this.clueTileMap.SetTile(new Vector3Int(i, j, 0), tiles[clueGrid[vector]]);
             }
         }
-    }
-
-    public void OnSendWorkersPush(){
-        this.recievingInput = true;
-        this.actionBar.SetActive(true);
-        this.actionsButtons.SetActive(false);
-        
-    }
-
-    public void stopRecievingInput() {
-        this.recievingInput = false;
-        this.actionBar.SetActive(false);
-        this.actionsButtons.SetActive(true);
     }
 
     private Dictionary<string, Tile> LoadResources()

@@ -37,6 +37,9 @@ public class ActionBarController : MonoBehaviour
                     case 'R':
                         image.sprite = right;
                         break;
+                    case 'F':
+                        image.sprite = dig;
+                        break;
                     default:
                         image.sprite = empty;
                         break;
@@ -45,7 +48,7 @@ public class ActionBarController : MonoBehaviour
         }
     }
 
-    Sprite up, down, left, right, empty;
+    Sprite up, down, left, right, empty, dig;
 
     public void Start()
     {
@@ -61,6 +64,7 @@ public class ActionBarController : MonoBehaviour
         left = Resources.Load<Sprite>("ActionButtons/LeftArrowButton");
         right = Resources.Load<Sprite>("ActionButtons/RightArrowButton");
         empty = Resources.Load<Sprite>("ActionButtons/EmptyButton");
+        dig = Resources.Load<Sprite>("ActionButtons/DigButton");
 
         ActionInput = "";
     }
