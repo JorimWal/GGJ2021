@@ -210,6 +210,11 @@ public class Map : MonoBehaviour {
 
     }
 
+    public void buildBridge(Vector2Int position){
+        this.grid[position] = TileType.TileTypes.BRIDGE;
+        tileMapController.DrawTile(position, TileType.TileTypes.BRIDGE);
+    }
+
 
     public Dictionary<Vector2Int, TileType.TileTypes> getGrid(){
         return this.grid;

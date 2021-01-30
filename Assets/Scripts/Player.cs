@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class Player : MonoBehaviour
     public int turnsTaken = 0;
     public int turnslimit = 15;
     public int workersLeft = 5;
+
+    public int woodPieces = 0;
 
     void Start() {
         Debug.Log($"Created Player");
@@ -101,14 +104,26 @@ public class Player : MonoBehaviour
             //Death nodes kill workers
             Map.Instance.getTileInfo(coord);
 
-            if (grid[coord] == TileType.TileTypes.DESERT)
+            if (grid[coord] == TileType.TileTypes.RIVER){
+                
+                if(this.woodPieces > 0){
+                    Debug.Log($"WORKER USED A WOOD PIECE TO BUILD A BRIDGE");
+                    this.woodPieces--;
+                    UIManager.Instance.setWoodCounter(this.woodPieces);
+                    Map.Instance.buildBridge(coord);
+                    return false;
+                }
                 return true;
+            }
+
         }
         //If no traveled tiles cause death, the worker is not dead
         return false;
     }
 
     public void executeInstructions(){
+        Dictionary<Vector2Int, TileType.TileTypes> grid = Map.Instance.getGrid();
+
         if (input.Length <= 0)
             return;
         Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
@@ -137,6 +152,12 @@ public class Player : MonoBehaviour
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down);
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left);
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
+
+            if(grid[path[path.Count - 1]] == TileType.TileTypes.FOREST){
+                Debug.Log($"WOOD GATHERED FROM THIS TILE {path[path.Count - 1]}");
+                woodPieces++;
+                UIManager.Instance.setWoodCounter(this.woodPieces);
+            }
         }
         this.checkForTurns();
         //Empty the action bar for new inputs

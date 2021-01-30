@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour {
 
     public Text workersLeft;
     public Text turnsTaken;
+    public Text woodCounter;
     public Tilemap clueTileMap;
 
     public GameObject actionBar;
@@ -40,6 +41,10 @@ public class UIManager : MonoBehaviour {
     public void setTurnsTaken(int turnsTaken, int turnsLeft)
     {
         this.turnsTaken.text = $"Turns : {turnsTaken} / {turnsLeft}";
+    }    
+    public void setWoodCounter(int count)
+    {
+        this.woodCounter.text = $"Wood x {count}";
     }
 
     public void setClue(Dictionary<Vector2Int, string> clueGrid){
