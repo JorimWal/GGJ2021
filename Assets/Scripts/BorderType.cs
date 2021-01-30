@@ -6,7 +6,9 @@ public class BorderType  {
 
     public enum BorderTypes {
         NORMAL,
-        SELECTED
+        SELECTED,
+        PLAYER,
+        DANGER
     }
             
     public static string tileName(BorderTypes type) {
@@ -15,8 +17,17 @@ public class BorderType  {
             case BorderTypes.NORMAL:
                 name = "NormalBorder";
                 break;
+            case BorderTypes.SELECTED:
+                name = "SelectedBorder";
+                break;
+            case BorderTypes.PLAYER:
+                name = "PlayerBorder";
+                break;
+            case BorderTypes.DANGER:
+                name = "DangerBorder";
+                break;
             default:
-                name =  "SelectedBorder";
+                name =  "NormalBorder";
                 break;
         }
 

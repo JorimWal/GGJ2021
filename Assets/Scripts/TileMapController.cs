@@ -44,7 +44,9 @@ public class TileMapController : MonoBehaviour
                 this.DrawTile(i,j,"QuestionMark");
             }
         }
-        DrawTile(Map.Instance.getPlayerPosition(), "P");
+        Vector2Int playerPosition = Map.Instance.getPlayerPosition();
+        DrawTile(playerPosition, "P");
+        this.changeBorder(playerPosition, BorderType.BorderTypes.PLAYER);
     }
 
     public void DrawTile(Vector2Int coord, string tile)
