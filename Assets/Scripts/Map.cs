@@ -237,6 +237,24 @@ public class Map : MonoBehaviour {
         }
     }
 
+    public string getTileInfoCountForHidden(Vector2Int position)
+    {
+        try
+        {
+            string info = this.tileMapController.GetTileInfo(position);
+            if (info.Equals("QuestionMark")){
+                return "?";
+            }
+            return this.grid[position];
+        }
+        catch (KeyNotFoundException ex)
+        {
+            Debug.Log($"Position {position} is out of the limits for this grid. Returning X");
+            return "X";
+        }
+    }
+
+
     public void Reveal(Vector2Int position)
     {
         if (!grid.ContainsKey(position))
@@ -330,6 +348,7 @@ public class Map : MonoBehaviour {
     public void moveCursorFromPlayer(string input){
         
         this.resetCursor();
+        BorderType.BorderTypes borderWeAreUsing = BorderType.BorderTypes.SELECTED;
 
         foreach (char instruction in input.ToCharArray())
         {
@@ -353,8 +372,11 @@ public class Map : MonoBehaviour {
                     Debug.Log($"Character {instruction} not recognized");
                     break;
             }
+            if(this.getTileInfoCountForHidden(this.cursorPosition) == "D" ){
+                borderWeAreUsing = BorderType.BorderTypes.DANGER;
+            };
             Debug.Log($"We draw the cursor over {this.cursorPosition}");
-            this.tileMapController.changeBorder(this.cursorPosition, BorderType.BorderTypes.SELECTED);
+            this.tileMapController.changeBorder(this.cursorPosition, borderWeAreUsing);
         }
 
     }
