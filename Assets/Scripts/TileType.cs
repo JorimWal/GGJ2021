@@ -16,7 +16,11 @@ public class TileType  {
         QUESTION_MARK,
         UNDERSCORE,
         NOTHING,
-        TREASURE
+        TREASURE,
+        CHEST,
+        DIG_ATTEMPT,
+        CHOPPED_FOREST,
+        OPEN_CHEST
     }
             
     public static string tileName(TileTypes type) {
@@ -28,6 +32,9 @@ public class TileType  {
                 break;
             case TileTypes.FOREST:
                 name = "F";
+                break;
+            case TileTypes.CHOPPED_FOREST:
+                name = "small_f";
                 break;
             case TileTypes.PLAYER:
                 name = "P";
@@ -47,8 +54,17 @@ public class TileType  {
             case TileTypes.BRIDGE:
                 name = "B";
                 break;
+            case TileTypes.CHEST:
+                name = "C";
+                break;
+            case TileTypes.OPEN_CHEST:
+                name = "small_c";
+                break;
             case TileTypes.QUESTION_MARK:
                 name = "QuestionMark";
+                break;
+            case TileTypes.DIG_ATTEMPT:
+                name = "small_x";
                 break;
             case TileTypes.NOTHING:
                 name = "X";
@@ -91,9 +107,22 @@ public class TileType  {
             case "B":
                 type = TileTypes.BRIDGE;
                 break;
+            case "C":
+                type = TileTypes.CHEST;
+                break;
             case "X":
                 type = TileTypes.NOTHING;
                 break;
+            case "small_x":
+                type = TileTypes.DIG_ATTEMPT;
+                break;
+            case "small_c":
+                type = TileTypes.OPEN_CHEST;
+                break;
+            case "small_f":
+                type = TileTypes.CHOPPED_FOREST;
+                break;
+            
             default:
                 UnityEngine.Debug.LogError($"DEFAULTED ON TILENAME BC COULDNT FIND {type}");
                 type = TileTypes.NORMAL;

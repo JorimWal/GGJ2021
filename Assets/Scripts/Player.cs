@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ public class Player : MonoBehaviour
     public int turnsTaken = 0;
     public int turnslimit = 15;
     public int workersLeft = 5;
+
+    public List<Item> items = new List<Item>();
 
     public TextBubble textUI;
     public int woodPieces = 0;
@@ -135,6 +138,14 @@ public class Player : MonoBehaviour
         if (checkForWorkerDeath(path)) { 
             this.workersLeft--;
             Debug.Log($"{this}: LOST A WORKER: WORKERS LEFT {workersLeft}");
+
+            if(this.doIHaveItem(Item.ItemKind.FLYING_PIDGEON) != null){
+                //I have the flying pidgeon so the path is marked anyways.
+                for (int i = 0; i < path.Count; i++) {
+                    Map.Instance.Reveal(path[i]);
+                }
+            }
+
             UIManager.Instance.setWorkersLeft(this.workersLeft);
             if (workersLeft <= 0){
                 textUI.SetContent("All your workers have perished, your search is over", red.r, red.g, red.b);
@@ -168,12 +179,21 @@ public class Player : MonoBehaviour
             if(grid[path[path.Count - 1]] == TileType.TileTypes.FOREST){
                 Debug.Log($"WOOD GATHERED FROM THIS TILE {path[path.Count - 1]}");
                 woodPieces++;
+                Map.Instance.chopForest(path[path.Count - 1]);
                 UIManager.Instance.setWoodCounter(this.woodPieces);
+            } else if(grid[path[path.Count - 1]] == TileType.TileTypes.CHEST) {
+                Debug.Log($"ITEM GOT FROM THIS CHEST {path[path.Count - 1]}");
+                Item gotItem = Map.Instance.openChest(path[path.Count - 1]);
+                Debug.Log($"YOU GOT {gotItem.getName()}");
+                this.items.Add(gotItem);
+                
+                //TODO: UIManager.Instance.setInventary(this.items);
+
             }
 
            if(!won)
                 textUI.SetContent("Your worker brings new insight of your surroundings");
- }
+        }
         this.checkForTurns();
         //Empty the action bar for new inputs
         input = "";
@@ -189,22 +209,26 @@ public class Player : MonoBehaviour
 
     }
 
-    public void AddInput(string action)
-    {
+    public void AddInput(string action) {
         //If the final command is dig, allow no further commands
         if(!(input.Length > 0 && input[input.Length-1] =='F'))
         {
             if(input.Length > 0 && this.oppositeAction(action, input[input.Length - 1].ToString())){
-                Debug.Log($"Actions {action} is opposed to last action {input[input.Length - 1]} so we remove that");
-                this.input = this.input.Substring(0,input.Length - 1);
-                ActionBarController.Instance.ActionInput = this.input;
-                Map.Instance.moveCursorFromPlayer(this.input);
-
+                    Debug.Log($"Actions {action} is opposed to last action {input[input.Length - 1]} so we remove that");
+                    this.input = this.input.Substring(0,input.Length - 1);
+                    ActionBarController.Instance.ActionInput = this.input;
+                    Map.Instance.moveCursorFromPlayer(this.input);
             } else {
-                this.input += action;
-
-                ActionBarController.Instance.ActionInput = this.input;
-                Map.Instance.moveCursorFromPlayer(this.input);
+                try {
+                    this.input += action;
+                    ActionBarController.Instance.ActionInput = this.input;
+                    Map.Instance.moveCursorFromPlayer(this.input);
+                } catch (Exception ex) {
+                    Debug.Log("We cant keep going that way:" + ex.ToString());
+                    this.input = this.input.Substring(0, input.Length - 1);
+                    ActionBarController.Instance.ActionInput = this.input;
+                }
+                
             }
             
         }
@@ -242,6 +266,16 @@ public class Player : MonoBehaviour
                 break;
         }
         return false;
+    }
+
+    public Item doIHaveItem(Item.ItemKind kind){
+        Item item = null;
+        foreach (Item itemHold in this.items) {
+            if(itemHold.getKind() == kind){
+                item = itemHold;
+            }
+        }
+        return item;
     }
 
 

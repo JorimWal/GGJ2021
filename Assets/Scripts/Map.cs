@@ -7,7 +7,7 @@ public class Map : MonoBehaviour {
     
     public int mapSize = 10;
     public int forestTiles = 7;
-
+    public int chestsTiles = 1;
     public int desertTiles = 3;
     public int riverTiles = 5;
     public int mountainTiles = 4;
@@ -138,6 +138,10 @@ public class Map : MonoBehaviour {
                 {
                     putMountainInTheMap();
                 }
+                for (int i = 0; i < this.chestsTiles; i++)
+                {
+                    putChestInTheMap();
+                }
 
                 textBubble.SetContent("Search around the island and Dig at the spot on the treasure map");
                 setClue();
@@ -267,10 +271,41 @@ public class Map : MonoBehaviour {
         Debug.Log($"Mountain added in {position}");
 
     }
+    private void putChestInTheMap(){
+        int tries = 0;
+        Vector2Int position;
+        do
+        {
+            int x = UnityEngine.Random.Range(0, mapSize);
+            int y = UnityEngine.Random.Range(0, mapSize);
+            position = new Vector2Int(x, y);
+            tries++;
+
+            if (tries > MAX_TRIES_FOR_MAP_GENERATION)
+            {
+                throw new System.Exception("MAX NUMBER OF MAP GENERATION TRIES REACHED");
+            }
+
+        } while (!this.isChestTheoricalMountainPositionCorrect(position));
+
+        this.grid[position] = TileType.TileTypes.CHEST;
+        Debug.Log($"Chest added in {position}");
+
+    }
 
     public void buildBridge(Vector2Int position){
         this.grid[position] = TileType.TileTypes.BRIDGE;
         tileMapController.DrawTile(position, TileType.TileTypes.BRIDGE);
+    }
+
+    public void chopForest(Vector2Int position){
+        this.grid[position] = TileType.TileTypes.CHOPPED_FOREST;
+        tileMapController.DrawTile(position, TileType.TileTypes.CHOPPED_FOREST);
+    }
+    public Item openChest(Vector2Int position){
+        this.grid[position] = TileType.TileTypes.OPEN_CHEST;
+        tileMapController.DrawTile(position, TileType.TileTypes.OPEN_CHEST);
+        return Item.createItem(Item.ItemKind.FLYING_PIDGEON);
     }
 
 
@@ -399,6 +434,9 @@ public class Map : MonoBehaviour {
     private bool isMountainTheoricalMountainPositionCorrect(Vector2Int possibleMountainPosition) {
         return (this.treasurePosition != possibleMountainPosition && this.getTileInfo(possibleMountainPosition) == TileType.TileTypes.NORMAL);
     }
+    private bool isChestTheoricalMountainPositionCorrect(Vector2Int possibleMountainPosition) {
+        return (this.treasurePosition != possibleMountainPosition && this.getTileInfo(possibleMountainPosition) == TileType.TileTypes.NORMAL);
+    }
 
     public void moveCursorFromPlayer(string input){
         
@@ -427,7 +465,16 @@ public class Map : MonoBehaviour {
                     Debug.Log($"Character {instruction} not recognized");
                     break;
             }
-            if(this.getTileInfoCountForHidden(this.cursorPosition) == TileType.TileTypes.DESERT ){
+
+            
+            TileType.TileTypes type = this.getTileInfoCountForHidden(this.cursorPosition);
+
+            if (type == TileType.TileTypes.NOTHING) {
+                Debug.Log($"Player is out of bounds! Lets go back");
+                throw new Exception("Grid out of bounds!");
+            }
+
+            if(type == TileType.TileTypes.DESERT ){
                 borderWeAreUsing = BorderType.BorderTypes.DANGER;
             };
             Debug.Log($"We draw the cursor over {this.cursorPosition}");
