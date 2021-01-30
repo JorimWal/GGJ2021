@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
@@ -191,22 +192,26 @@ public class Player : MonoBehaviour
 
     }
 
-    public void AddInput(string action)
-    {
+    public void AddInput(string action) {
         //If the final command is dig, allow no further commands
         if(!(input.Length > 0 && input[input.Length-1] =='F'))
         {
             if(input.Length > 0 && this.oppositeAction(action, input[input.Length - 1].ToString())){
-                Debug.Log($"Actions {action} is opposed to last action {input[input.Length - 1]} so we remove that");
-                this.input = this.input.Substring(0,input.Length - 1);
-                ActionBarController.Instance.ActionInput = this.input;
-                Map.Instance.moveCursorFromPlayer(this.input);
-
+                    Debug.Log($"Actions {action} is opposed to last action {input[input.Length - 1]} so we remove that");
+                    this.input = this.input.Substring(0,input.Length - 1);
+                    ActionBarController.Instance.ActionInput = this.input;
+                    Map.Instance.moveCursorFromPlayer(this.input);
             } else {
-                this.input += action;
-
-                ActionBarController.Instance.ActionInput = this.input;
-                Map.Instance.moveCursorFromPlayer(this.input);
+                try {
+                    this.input += action;
+                    ActionBarController.Instance.ActionInput = this.input;
+                    Map.Instance.moveCursorFromPlayer(this.input);
+                } catch (Exception ex) {
+                    Debug.Log("We cant keep going that way:" + ex.ToString());
+                    this.input = this.input.Substring(0, input.Length - 1);
+                    ActionBarController.Instance.ActionInput = this.input;
+                }
+                
             }
             
         }

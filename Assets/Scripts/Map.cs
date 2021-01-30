@@ -387,7 +387,16 @@ public class Map : MonoBehaviour {
                     Debug.Log($"Character {instruction} not recognized");
                     break;
             }
-            if(this.getTileInfoCountForHidden(this.cursorPosition) == TileType.TileTypes.DESERT ){
+
+            
+            TileType.TileTypes type = this.getTileInfoCountForHidden(this.cursorPosition);
+
+            if (type == TileType.TileTypes.NOTHING) {
+                Debug.Log($"Player is out of bounds! Lets go back");
+                throw new Exception("Grid out of bounds!");
+            }
+
+            if(type == TileType.TileTypes.DESERT ){
                 borderWeAreUsing = BorderType.BorderTypes.DANGER;
             };
             Debug.Log($"We draw the cursor over {this.cursorPosition}");
