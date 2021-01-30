@@ -22,7 +22,7 @@ public class Map : MonoBehaviour {
     public static Map Instance { get { return _instance; } }
 
     private Vector2Int playerPosition;
-    private Vector2Int treasurePosition;
+    public Vector2Int treasurePosition;
 
     private List<Vector2Int> dangerPositions;
 

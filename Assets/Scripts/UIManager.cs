@@ -19,12 +19,6 @@ public class UIManager : MonoBehaviour {
     public GameObject actionsButtons;
 
     Dictionary<string, Tile> tiles;
-    private bool recievingInput = false;
-
-    public bool isRecievingInput()
-    {
-        return this.recievingInput;
-    }
 
 
     private void Awake()
@@ -64,18 +58,15 @@ public class UIManager : MonoBehaviour {
             }
         }
     }
-
-    public void OnSendWorkersPush(){
-        this.recievingInput = true;
-        this.actionBar.SetActive(true);
-        this.actionsButtons.SetActive(false);
-        
-    }
-
-    public void stopRecievingInput() {
-        this.recievingInput = false;
-        this.actionBar.SetActive(false);
-        this.actionsButtons.SetActive(true);
+    private Dictionary<string, Tile> LoadResources()
+    {
+        Dictionary<string, Tile> output = new Dictionary<string, Tile>();
+        Tile[] resources = Resources.LoadAll<Tile>("Tilemap/Tiles");
+        foreach (Tile tile in resources)
+        {
+            output.Add(tile.name, tile);
+        }
+        return output;
     }
 
 }

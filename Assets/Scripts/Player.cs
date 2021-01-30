@@ -26,40 +26,35 @@ public class Player : MonoBehaviour
 
     void HandleInput()
     {
-        if(UIManager.Instance.isRecievingInput()){
-            string oldinput = input;
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-                input += "U";
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-                input += "D";
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-                input += "L";
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-                input += "R";
+        string oldinput = input;
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            AddInput("U");
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            AddInput("D");
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            AddInput("L");
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            AddInput("R");
+        if (Input.GetKeyDown(KeyCode.F))
+            AddInput("F");
 
-            if (Input.GetKeyDown(KeyCode.Backspace))
-                input = input.Remove(input.Length - 1);
+        if (Input.GetKeyDown(KeyCode.Backspace))
+            input = input.Remove(input.Length - 1);
 
-            if(input != oldinput)
-            {
-                ActionBarController.Instance.ActionInput = input;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                dig();
-                input = "";
-                ActionBarController.Instance.ActionInput = "";
-                UIManager.Instance.stopRecievingInput();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Escape)){
-                input = "";
-                ActionBarController.Instance.ActionInput = "";
-                UIManager.Instance.stopRecievingInput();
-            }
+        if(input != oldinput)
+        {
+            ActionBarController.Instance.ActionInput = input;
         }
 
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            executeInstructions();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            input = "";
+            ActionBarController.Instance.ActionInput = "";
+        }
     }
 
     public List<Vector2Int> moveWorker (string instructions){
@@ -81,6 +76,8 @@ public class Player : MonoBehaviour
                     break;
                 case 'R':
                     workerPosition = workerPosition + Vector2Int.right;
+                    break;
+                case 'F':
                     break;
                 default:
                     Debug.Log($"Character {instruction} not recognized");
@@ -107,10 +104,11 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    public void dig(){
+    public void executeInstructions(){
+        if (input.Length <= 0)
+            return;
         Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
         List<Vector2Int> path = moveWorker(input);
-        Vector2Int workerPosition = path[path.Count - 1];
         if (checkForWorkerDeath(path)) { 
             this.workersLeft--;
             Debug.Log($"{this}: LOST A WORKER: WORKERS LEFT {workersLeft}");
@@ -126,7 +124,8 @@ public class Player : MonoBehaviour
             for(int i = 0; i < path.Count; i++)
             {
                 Map.Instance.Reveal(path[i]);
-                if (Map.Instance.getTileInfo(path[i]) == "T")
+                //You win if digging on the victory tile
+                if (Map.Instance.treasurePosition == path[path.Count-1] && input[input.Length-1] == 'F')
                     this.win();
             }
             //Reveal all tiles directly adjacent to the worker's final spot
@@ -137,6 +136,9 @@ public class Player : MonoBehaviour
         }
         this.checkForTurns();
 
+        //Empty the action bar for new inputs
+        input = "";
+        ActionBarController.Instance.ActionInput = "";
     }
 
     private void checkForTurns(){
@@ -148,7 +150,15 @@ public class Player : MonoBehaviour
 
     }
 
-
+    public void AddInput(string action)
+    {
+        //If the final command is dig, allow no further commands
+        if(!(input.Length > 0 && input[input.Length-1] =='F'))
+        {
+            this.input += action;
+            ActionBarController.Instance.ActionInput = this.input;
+        }
+    }
     public void win(){
         Debug.Log($"YOU WIN!!!");
     }
