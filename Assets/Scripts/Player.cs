@@ -196,9 +196,19 @@ public class Player : MonoBehaviour
         //If the final command is dig, allow no further commands
         if(!(input.Length > 0 && input[input.Length-1] =='F'))
         {
-            this.input += action;
-            ActionBarController.Instance.ActionInput = this.input;
-            Map.Instance.moveCursorFromPlayer(this.input);
+            if(input.Length > 0 && this.oppositeAction(action, input[input.Length - 1].ToString())){
+                Debug.Log($"Actions {action} is opposed to last action {input[input.Length - 1]} so we remove that");
+                this.input = this.input.Substring(0,input.Length - 1);
+                ActionBarController.Instance.ActionInput = this.input;
+                Map.Instance.moveCursorFromPlayer(this.input);
+
+            } else {
+                this.input += action;
+
+                ActionBarController.Instance.ActionInput = this.input;
+                Map.Instance.moveCursorFromPlayer(this.input);
+            }
+            
         }
     }
     public void win(){
@@ -209,6 +219,32 @@ public class Player : MonoBehaviour
 
     public void gameOver(){
         Debug.Log($"YOU LOSE!!!");
+    }
+
+    public bool oppositeAction(string action, string lastAction){
+        switch (action) {
+            case "U":
+                if (lastAction.Equals("D")) {
+                    return true;
+                }
+                break;
+            case "D":
+                if (lastAction.Equals("U")) {
+                    return true;
+                }
+                break;
+            case "L":
+                if (lastAction.Equals("R")) {
+                    return true;
+                }
+                break;
+            case "R":
+                if (lastAction.Equals("L")) {
+                    return true;
+                }
+                break;
+        }
+        return false;
     }
 
 
