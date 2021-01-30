@@ -49,11 +49,13 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             executeInstructions();
+            Map.Instance.resetCursor();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)){
             input = "";
             ActionBarController.Instance.ActionInput = "";
+            Map.Instance.resetCursor();
         }
     }
 
@@ -135,7 +137,6 @@ public class Player : MonoBehaviour
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
         }
         this.checkForTurns();
-
         //Empty the action bar for new inputs
         input = "";
         ActionBarController.Instance.ActionInput = "";
@@ -157,6 +158,7 @@ public class Player : MonoBehaviour
         {
             this.input += action;
             ActionBarController.Instance.ActionInput = this.input;
+            Map.Instance.moveCursorFromPlayer(this.input);
         }
     }
     public void win(){

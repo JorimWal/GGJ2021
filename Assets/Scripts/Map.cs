@@ -5,7 +5,10 @@ using UnityEngine;
 public class Map : MonoBehaviour {
 
 
-    public int mapSize = 10;
+    
+
+
+    public int mapSize = 100;
 
     public int deathTiles = 5;
 
@@ -22,6 +25,7 @@ public class Map : MonoBehaviour {
     public static Map Instance { get { return _instance; } }
 
     private Vector2Int playerPosition;
+    private Vector2Int cursorPosition;
     public Vector2Int treasurePosition;
 
     private List<Vector2Int> dangerPositions;
@@ -120,6 +124,7 @@ public class Map : MonoBehaviour {
         this.grid[playerPosition] = "P";
 
         this.playerPosition = playerPosition;
+        this.cursorPosition = playerPosition;
 
         Debug.Log($"Player is in {playerPosition}: {this.getTileInfo(playerPosition)}");
     }    
@@ -322,6 +327,42 @@ public class Map : MonoBehaviour {
         return this.getTileInfo(possibleMountainPosition) == "_";
     }
 
+    public void moveCursorFromPlayer(string input){
+        
+        this.resetCursor();
+
+        foreach (char instruction in input.ToCharArray())
+        {
+            switch (instruction)
+            {
+                case 'U':
+                    this.cursorPosition = this.cursorPosition + Vector2Int.up;
+                    break;
+                case 'D':
+                    this.cursorPosition = this.cursorPosition + Vector2Int.down;
+                    break;
+                case 'L':
+                    this.cursorPosition = this.cursorPosition + Vector2Int.left;
+                    break;
+                case 'R':
+                    this.cursorPosition = this.cursorPosition + Vector2Int.right;
+                    break;
+                case 'F':
+                    break;
+                default:
+                    Debug.Log($"Character {instruction} not recognized");
+                    break;
+            }
+            Debug.Log($"We draw the cursor over {this.cursorPosition}");
+            this.tileMapController.changeBorder(this.cursorPosition, BorderType.BorderTypes.SELECTED);
+        }
+
+    }
+
+    public void resetCursor(){
+        this.cursorPosition = this.playerPosition;
+        this.tileMapController.resetBorderTiles();
+    }
 
     public void setClue(){
         Dictionary<Vector2Int, string> clueGrid = new Dictionary<Vector2Int, string>();
