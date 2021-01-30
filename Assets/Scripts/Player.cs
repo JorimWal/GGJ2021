@@ -26,29 +26,38 @@ public class Player : MonoBehaviour
 
     void HandleInput()
     {
-        string oldinput = input;
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            input += "U";
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            input += "D";
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            input += "L";
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            input += "R";
+        if(UIManager.Instance.isRecievingInput()){
+            string oldinput = input;
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                input += "U";
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                input += "D";
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+                input += "L";
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+                input += "R";
 
-        if (Input.GetKeyDown(KeyCode.Backspace))
-            input = input.Remove(input.Length - 1);
+            if (Input.GetKeyDown(KeyCode.Backspace))
+                input = input.Remove(input.Length - 1);
 
-        if(input != oldinput)
-        {
-            ActionBarController.Instance.ActionInput = input;
-        }
+            if(input != oldinput)
+            {
+                ActionBarController.Instance.ActionInput = input;
+            }
 
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            dig();
-            input = "";
-            ActionBarController.Instance.ActionInput = "";
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                dig();
+                input = "";
+                ActionBarController.Instance.ActionInput = "";
+                UIManager.Instance.stopRecievingInput();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape)){
+                input = "";
+                ActionBarController.Instance.ActionInput = "";
+                UIManager.Instance.stopRecievingInput();
+            }
         }
 
     }
