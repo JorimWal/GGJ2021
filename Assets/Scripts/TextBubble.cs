@@ -14,6 +14,7 @@ public class TextBubble : MonoBehaviour
             text = GetComponentInChildren<Text>();
         this.content = content;
         text.color = new Color(colorR, colorG, colorB, 1);
+        StopAllCoroutines();
         EmptyBubble();
         StartCoroutine(ScrollText());
     }
@@ -23,7 +24,7 @@ public class TextBubble : MonoBehaviour
         text.text = "";
     }
 
-    const float timePerLetter = 0.08f;
+    const float timePerLetter = 0.04f;
 
     IEnumerator ScrollText()
     {
