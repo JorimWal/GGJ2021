@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void setClue(Dictionary<Vector2Int, string> clueGrid){
-        tiles = this.LoadResources();
+        tiles = TileMapController.LoadResources();
         this.clueTileMap.ClearAllTiles();
         int clueSize = Map.Instance.getClueSizeFromTreasure() * 3;
         this.clueTileMap.size = new Vector3Int(clueSize,clueSize,0);
@@ -76,17 +76,6 @@ public class UIManager : MonoBehaviour {
         this.recievingInput = false;
         this.actionBar.SetActive(false);
         this.actionsButtons.SetActive(true);
-    }
-
-    private Dictionary<string, Tile> LoadResources()
-    {
-        Dictionary<string, Tile> output = new Dictionary<string, Tile>();
-        Tile[] resources = Resources.LoadAll<Tile>("Tilemap/Tiles");
-        foreach (Tile tile in resources)
-        {
-            output.Add(tile.name, tile);
-        }
-        return output;
     }
 
 }

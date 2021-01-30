@@ -9,6 +9,10 @@ public class Map : MonoBehaviour {
 
     public int deathTiles = 5;
 
+    public int desertTiles = 7;
+    public int riverTiles = 5;
+    public int mountainTiles = 4;
+
     public int clueSizeFromTreasure = 1;
 
     public const int MAX_TRIES_FOR_MAP_GENERATION = 5;
@@ -68,8 +72,19 @@ public class Map : MonoBehaviour {
         setFinishTarget();
         setPlayer();
         for (int i = 0; i < this.deathTiles; i++) {
-            setDanger();
+            putDangerInTheMap();
         }
+        for (int i = 0; i < this.desertTiles; i++) {
+            putDesertInTheMap();
+        }
+        for (int i = 0; i < this.riverTiles; i++) {
+            putRiverInTheMap();
+        }
+        for (int i = 0; i < this.mountainTiles; i++) {
+            putMountainInTheMap();
+        }
+
+
         setClue();
     }
     private void setFinishTarget()
@@ -109,7 +124,7 @@ public class Map : MonoBehaviour {
         Debug.Log($"Player is in {playerPosition}: {this.getTileInfo(playerPosition)}");
     }    
     
-    private void setDanger()
+    private void putDangerInTheMap()
     {
         int tries = 0;
         Vector2Int dangerPosition;
@@ -131,6 +146,70 @@ public class Map : MonoBehaviour {
         this.dangerPositions.Add(playerPosition);
 
         Debug.Log($"Dangers are in {this.dangerPositions}");
+
+    }
+
+    private void putDesertInTheMap(){
+        int tries = 0;
+        Vector2Int position;
+        do
+        {
+            int x = UnityEngine.Random.Range(0, mapSize);
+            int y = UnityEngine.Random.Range(0, mapSize);
+            position = new Vector2Int(x, y);
+            tries++;
+
+            if (tries > MAX_TRIES_FOR_MAP_GENERATION)
+            {
+                throw new System.Exception("MAX NUMBER OF MAP GENERATION TRIES REACHED");
+            }
+
+        } while (!this.isDesertTheoricalSpawnPositionCorrect(position));
+
+        this.grid[position] = "L";
+        Debug.Log($"Desert added in {position}");
+
+    }   
+    private void putRiverInTheMap(){
+        int tries = 0;
+        Vector2Int position;
+        do
+        {
+            int x = UnityEngine.Random.Range(0, mapSize);
+            int y = UnityEngine.Random.Range(0, mapSize);
+            position = new Vector2Int(x, y);
+            tries++;
+
+            if (tries > MAX_TRIES_FOR_MAP_GENERATION)
+            {
+                throw new System.Exception("MAX NUMBER OF MAP GENERATION TRIES REACHED");
+            }
+
+        } while (!this.isRiverTheoricalSpawnPositionCorrect(position));
+
+        this.grid[position] = "S";
+        Debug.Log($"River added in {position}");
+
+    }
+    private void putMountainInTheMap(){
+        int tries = 0;
+        Vector2Int position;
+        do
+        {
+            int x = UnityEngine.Random.Range(0, mapSize);
+            int y = UnityEngine.Random.Range(0, mapSize);
+            position = new Vector2Int(x, y);
+            tries++;
+
+            if (tries > MAX_TRIES_FOR_MAP_GENERATION)
+            {
+                throw new System.Exception("MAX NUMBER OF MAP GENERATION TRIES REACHED");
+            }
+
+        } while (!this.isMountainTheoricalMountainPositionCorrect(position));
+
+        this.grid[position] = "M";
+        Debug.Log($"Mountain added in {position}");
 
     }
 
@@ -232,6 +311,17 @@ public class Map : MonoBehaviour {
         }
         return true;
     }
+
+    private bool isDesertTheoricalSpawnPositionCorrect(Vector2Int possibleDesertPosition) {
+        return this.getTileInfo(possibleDesertPosition) == "_";
+    }
+    private bool isRiverTheoricalSpawnPositionCorrect(Vector2Int possibleRiverPosition) {
+        return this.getTileInfo(possibleRiverPosition) == "_";
+    }
+    private bool isMountainTheoricalMountainPositionCorrect(Vector2Int possibleMountainPosition) {
+        return this.getTileInfo(possibleMountainPosition) == "_";
+    }
+
 
     public void setClue(){
         Dictionary<Vector2Int, string> clueGrid = new Dictionary<Vector2Int, string>();

@@ -56,7 +56,7 @@ public class TileMapController : MonoBehaviour
         this.tileMapBehaviour.ClearAllTiles();
     }
 
-    public Dictionary<string, Tile> LoadResources()
+    public static Dictionary<string, Tile> LoadResources()
     {
         Dictionary<string, Tile> output = new Dictionary<string, Tile>();
         Tile[] resources = Resources.LoadAll<Tile>("Tilemap/Tiles");
