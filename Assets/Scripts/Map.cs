@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,9 +24,12 @@ public class Map : MonoBehaviour {
     private Vector2Int cursorPosition;
     public Vector2Int treasurePosition;
 
+
     private List<Vector2Int> dangerPositions;
 
     public TileMapController tileMapController;
+
+    private UIManager uIManager;
 
     private void Awake()
     {
@@ -37,8 +41,11 @@ public class Map : MonoBehaviour {
         {
             _instance = this;
         }
-        this.grid = new Dictionary<Vector2Int, TileType.TileTypes>();
-        this.createMap();
+        if(this.grid == null) {
+            this.grid = new Dictionary<Vector2Int, TileType.TileTypes>();
+            this.uIManager = GetComponent<UIManager>();
+            this.createMap();
+        }
     }
 
 
@@ -55,12 +62,23 @@ public class Map : MonoBehaviour {
 
 
     void Start(){
-
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+        if (this.grid == null)
+        {
+            this.grid = new Dictionary<Vector2Int, TileType.TileTypes>();
+            this.createMap();
+        }
     }
 
     private void createMap(){
        
-        
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
                 Vector2Int vector = new Vector2Int(i, j);
@@ -404,7 +422,7 @@ public class Map : MonoBehaviour {
             }
         }
 
-        UIManager.Instance.setClue(clueGrid);
+        this.uIManager.setClue(clueGrid);
     }
 
 

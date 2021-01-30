@@ -17,12 +17,21 @@ public class UIManager : MonoBehaviour {
 
     public GameObject actionBar;
 
-    public GameObject actionsButtons;
-
     Dictionary<string, Tile> tiles;
 
 
     private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+    void Start()
     {
         if (_instance != null && _instance != this)
         {
