@@ -92,14 +92,16 @@ public class Player : MonoBehaviour
     }
 
     private bool checkForWorkerDeath(List<Vector2Int> path){
-        Dictionary<Vector2Int, string> grid = Map.Instance.getGrid();
+        Dictionary<Vector2Int, TileType.TileTypes> grid = Map.Instance.getGrid();
         foreach(Vector2Int coord in path)
         {
             //Nodes outside of map kill workers
             if (!grid.ContainsKey(coord))
                 return true;
             //Death nodes kill workers
-            if (grid[coord] == "D")
+            Map.Instance.getTileInfo(coord);
+
+            if (grid[coord] == TileType.TileTypes.DESERT)
                 return true;
         }
         //If no traveled tiles cause death, the worker is not dead

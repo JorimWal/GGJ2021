@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: PlayerBorder
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -2595726176243500780, guid: f8b7cc9d62a26bc489bd6fb5d553388e, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: -5494343062446507814, guid: f8b7cc9d62a26bc489bd6fb5d553388e, type: 3}
+  m_Color: {r: 0.023529412, g: 0.32156864, b: 0.8666667, a: 1}
   m_Transform:
     e00: 1
     e01: 0

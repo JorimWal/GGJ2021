@@ -35,17 +35,17 @@ public class TileMapController : MonoBehaviour
 
     public void FillTileMap()
     {
-        Dictionary<Vector2Int, string> grid = Map.Instance.getGrid();
+        Dictionary<Vector2Int, TileType.TileTypes> grid = Map.Instance.getGrid();
         int mapSize = Map.Instance.getMapSize();
         for (int i = 0; i < mapSize; i++)
         {
             for (int j = 0; j < mapSize; j++)
             {
-                this.DrawTile(i,j,"QuestionMark");
+                this.DrawTile(i,j,TileType.TileTypes.QUESTION_MARK);
             }
         }
         Vector2Int playerPosition = Map.Instance.getPlayerPosition();
-        DrawTile(playerPosition, "P");
+        DrawTile(playerPosition, TileType.TileTypes.PLAYER);
         this.changeBorder(playerPosition, BorderType.BorderTypes.PLAYER);
     }
 
@@ -54,25 +54,25 @@ public class TileMapController : MonoBehaviour
         return tile.name;
 
     }
-    public void DrawTile(Vector2Int coord, string tile)
+    public void DrawTile(Vector2Int coord, TileType.TileTypes tile)
     {
         this.DrawTile(coord.x, coord.y, tile);
     }
 
-    public void DrawTile(Vector2Int coord, string tile, BorderType.BorderTypes type)
+    public void DrawTile(Vector2Int coord, TileType.TileTypes tile, BorderType.BorderTypes type)
     {
         this.DrawTile(coord.x, coord.y, tile, type);
     }
    
-    public void DrawTile(int x, int y, string tile)
+    public void DrawTile(int x, int y, TileType.TileTypes tile)
     {
-        tileMapBehaviour.SetTile(new Vector3Int(x, y, 0), tiles[tile]);
+        tileMapBehaviour.SetTile(new Vector3Int(x, y, 0), tiles[TileType.tileName(tile)]);
         this.bordersTileMap.SetTile(new Vector3Int(x, y, 0), borderTiles[BorderType.tileName(BorderType.BorderTypes.NORMAL)]);
 
     }
-    public void DrawTile(int x, int y, string tile, BorderType.BorderTypes type)
+    public void DrawTile(int x, int y, TileType.TileTypes tile, BorderType.BorderTypes type)
     {
-        tileMapBehaviour.SetTile(new Vector3Int(x, y, 0), tiles[tile]);
+        tileMapBehaviour.SetTile(new Vector3Int(x, y, 0), tiles[TileType.tileName(tile)]);
         this.bordersTileMap.SetTile(new Vector3Int(x, y, 0), borderTiles[BorderType.tileName(type)]);
     }
 
@@ -103,6 +103,7 @@ public class TileMapController : MonoBehaviour
         Tile[] resources = Resources.LoadAll<Tile>("Tilemap/Tiles");
         foreach(Tile tile in resources)
         {
+
             output.Add(tile.name, tile);
         }
         return output;

@@ -3,16 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Map : MonoBehaviour {
-
-
     
+    public int mapSize = 10;
+    public int forestTiles = 7;
 
-
-    public int mapSize = 100;
-
-    public int deathTiles = 5;
-
-    public int desertTiles = 7;
+    public int desertTiles = 3;
     public int riverTiles = 5;
     public int mountainTiles = 4;
 
@@ -42,7 +37,7 @@ public class Map : MonoBehaviour {
         {
             _instance = this;
         }
-        this.grid = new Dictionary<Vector2Int, string>();
+        this.grid = new Dictionary<Vector2Int, TileType.TileTypes>();
         this.createMap();
     }
 
@@ -52,7 +47,7 @@ public class Map : MonoBehaviour {
         return this.clueSizeFromTreasure;
     }
 
-    private Dictionary<Vector2Int, string> grid;
+    private Dictionary<Vector2Int, TileType.TileTypes> grid;
     public Vector2Int getPlayerPosition()
     {
         return this.playerPosition;
@@ -69,14 +64,15 @@ public class Map : MonoBehaviour {
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
                 Vector2Int vector = new Vector2Int(i, j);
-                this.grid.Add(vector, "_");
+                this.grid.Add(vector, TileType.TileTypes.NORMAL);
             }
         }
         
         setFinishTarget();
         setPlayer();
-        for (int i = 0; i < this.deathTiles; i++) {
-            putDangerInTheMap();
+        for (int i = 0; i < this.forestTiles; i++)
+        {
+            putForestInTheMap();
         }
         for (int i = 0; i < this.desertTiles; i++) {
             putDesertInTheMap();
@@ -121,7 +117,7 @@ public class Map : MonoBehaviour {
 
         } while(!this.isPlayerTheoricalSpawnPositionCorrect(playerPosition));
 
-        this.grid[playerPosition] = "P";
+        this.grid[playerPosition] = TileType.TileTypes.PLAYER;
 
         this.playerPosition = playerPosition;
         this.cursorPosition = playerPosition;
@@ -129,31 +125,27 @@ public class Map : MonoBehaviour {
         Debug.Log($"Player is in {playerPosition}: {this.getTileInfo(playerPosition)}");
     }    
     
-    private void putDangerInTheMap()
-    {
+    private void putForestInTheMap(){
         int tries = 0;
-        Vector2Int dangerPosition;
-        this.dangerPositions = new List<Vector2Int>();
-        do {
+        Vector2Int position;
+        do
+        {
             int x = UnityEngine.Random.Range(0, mapSize);
             int y = UnityEngine.Random.Range(0, mapSize);
-            dangerPosition = new Vector2Int(x, y);
+            position = new Vector2Int(x, y);
             tries++;
 
-            if(tries > MAX_TRIES_FOR_MAP_GENERATION ){
+            if (tries > MAX_TRIES_FOR_MAP_GENERATION)
+            {
                 throw new System.Exception("MAX NUMBER OF MAP GENERATION TRIES REACHED");
             }
 
-        } while(!this.isDangerTheoricalSpawnPositionCorrect(dangerPosition));
+        } while (!this.isDesertTheoricalSpawnPositionCorrect(position));
 
-        this.grid[dangerPosition] = "D";
+        this.grid[position] = TileType.TileTypes.FOREST;
+        Debug.Log($"Forest added in {position}");
 
-        this.dangerPositions.Add(playerPosition);
-
-        Debug.Log($"Dangers are in {this.dangerPositions}");
-
-    }
-
+    }   
     private void putDesertInTheMap(){
         int tries = 0;
         Vector2Int position;
@@ -171,7 +163,7 @@ public class Map : MonoBehaviour {
 
         } while (!this.isDesertTheoricalSpawnPositionCorrect(position));
 
-        this.grid[position] = "L";
+        this.grid[position] = TileType.TileTypes.DESERT;
         Debug.Log($"Desert added in {position}");
 
     }   
@@ -192,7 +184,7 @@ public class Map : MonoBehaviour {
 
         } while (!this.isRiverTheoricalSpawnPositionCorrect(position));
 
-        this.grid[position] = "S";
+        this.grid[position] = TileType.TileTypes.RIVER;
         Debug.Log($"River added in {position}");
 
     }
@@ -213,44 +205,44 @@ public class Map : MonoBehaviour {
 
         } while (!this.isMountainTheoricalMountainPositionCorrect(position));
 
-        this.grid[position] = "M";
+        this.grid[position] = TileType.TileTypes.MOUNTAIN;
         Debug.Log($"Mountain added in {position}");
 
     }
 
 
-    public Dictionary<Vector2Int, string> getGrid(){
+    public Dictionary<Vector2Int, TileType.TileTypes> getGrid(){
         return this.grid;
     }
 
-    public string getTileInfo(int x, int y){
+    public TileType.TileTypes getTileInfo(int x, int y){
         return this.grid[new Vector2Int(x,y)];
     }
 
-    public string getTileInfo(Vector2Int position)
+    public TileType.TileTypes getTileInfo(Vector2Int position)
     {
         try{
             return this.grid[position];
         } catch(KeyNotFoundException ex) {
             Debug.Log($"Position {position} is out of the limits for this grid. Returning X");
-            return "X"; 
+            return TileType.TileTypes.NOTHING; 
         }
     }
 
-    public string getTileInfoCountForHidden(Vector2Int position)
+    public TileType.TileTypes getTileInfoCountForHidden(Vector2Int position)
     {
         try
         {
             string info = this.tileMapController.GetTileInfo(position);
             if (info.Equals("QuestionMark")){
-                return "?";
+                return TileType.TileTypes.QUESTION_MARK;
             }
             return this.grid[position];
         }
         catch (KeyNotFoundException ex)
         {
             Debug.Log($"Position {position} is out of the limits for this grid. Returning X");
-            return "X";
+            return TileType.TileTypes.NOTHING;
         }
     }
 
@@ -266,7 +258,7 @@ public class Map : MonoBehaviour {
     {
         if (!grid.ContainsKey(position))
             return;
-        tileMapController.DrawTile(position, "_");
+        tileMapController.DrawTile(position, TileType.TileTypes.NORMAL);
     }
 
     public int getMapSize()
@@ -290,7 +282,7 @@ public class Map : MonoBehaviour {
 
     public void revealTreasure(){
         Vector2Int position = this.treasurePosition;
-        tileMapController.DrawTile(position, "T");
+        tileMapController.DrawTile(position, TileType.TileTypes.TREASURE);
     }
 
     private bool isPlayerTheoricalSpawnPositionCorrect(Vector2Int possiblePlayerPosition){
@@ -336,13 +328,13 @@ public class Map : MonoBehaviour {
     }
 
     private bool isDesertTheoricalSpawnPositionCorrect(Vector2Int possibleDesertPosition) {
-        return this.getTileInfo(possibleDesertPosition) == "_";
+        return (this.treasurePosition != possibleDesertPosition && this.getTileInfo(possibleDesertPosition) == TileType.TileTypes.NORMAL);
     }
     private bool isRiverTheoricalSpawnPositionCorrect(Vector2Int possibleRiverPosition) {
-        return this.getTileInfo(possibleRiverPosition) == "_";
+        return (this.treasurePosition != possibleRiverPosition && this.getTileInfo(possibleRiverPosition) == TileType.TileTypes.NORMAL);
     }
     private bool isMountainTheoricalMountainPositionCorrect(Vector2Int possibleMountainPosition) {
-        return this.getTileInfo(possibleMountainPosition) == "_";
+        return (this.treasurePosition != possibleMountainPosition && this.getTileInfo(possibleMountainPosition) == TileType.TileTypes.NORMAL);
     }
 
     public void moveCursorFromPlayer(string input){
@@ -372,7 +364,7 @@ public class Map : MonoBehaviour {
                     Debug.Log($"Character {instruction} not recognized");
                     break;
             }
-            if(this.getTileInfoCountForHidden(this.cursorPosition) == "D" ){
+            if(this.getTileInfoCountForHidden(this.cursorPosition) == TileType.TileTypes.DESERT ){
                 borderWeAreUsing = BorderType.BorderTypes.DANGER;
             };
             Debug.Log($"We draw the cursor over {this.cursorPosition}");
@@ -396,14 +388,14 @@ public class Map : MonoBehaviour {
             for (int j = -this.clueSizeFromTreasure; j <= this.clueSizeFromTreasure; j++) {
 
                 Vector2Int vector = this.treasurePosition + new Vector2Int(i, j);
-                
-                string info = getTileInfo(vector);
+
+                TileType.TileTypes info = getTileInfo(vector);
                 if (i == 0 && j == 0)
                 {
-                    info = "T";
+                    info = TileType.TileTypes.TREASURE;
                 }
                 
-                clueGrid.Add(new Vector2Int(i + this.clueSizeFromTreasure,j + this.clueSizeFromTreasure),info);
+                clueGrid.Add(new Vector2Int(i + this.clueSizeFromTreasure,j + this.clueSizeFromTreasure), TileType.tileName(info));
             }
         }
 
