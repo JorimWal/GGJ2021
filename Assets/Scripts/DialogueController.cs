@@ -100,6 +100,17 @@ public class DialogueController : MonoBehaviour
         }
     }
 
+    public void DesertMessage()
+    {
+        textBubble.SetContent("Your worker returns with new insights, but was");
+        textBubble.SetContent(" lost in the desert for several days.");
+    }
+
+    public void MountainMessage()
+    {
+        textBubble.SetContent("Your worker sought out high ground and gained a lot of information about the area.");
+    }
+
     public void TreasureMessage(Item item)
     {
         switch (item.getKind())

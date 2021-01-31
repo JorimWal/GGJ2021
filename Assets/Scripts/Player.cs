@@ -176,6 +176,8 @@ public class Player : MonoBehaviour
             bool openedchest = false;
             bool wood = false;
             bool wrongDig = false;
+            bool desert = false;
+            bool mountain = false;
             //If the worker does not die
             //Reveal all tiles the worker walked
             for(int i = 0; i < path.Count; i++)
@@ -183,6 +185,11 @@ public class Player : MonoBehaviour
                 Map.Instance.Reveal(path[i]);
                 if (grid[path[i]] == TileType.TileTypes.CHEST)
                     revealedchest = true;
+                if (grid[path[i]] == TileType.TileTypes.DESERT)
+                {
+                    turnsTaken += 1;
+                    desert = true;
+                }
             }
             //You win if digging on the victory tile
             if(input[input.Length - 1] == 'F'){
@@ -209,6 +216,15 @@ public class Player : MonoBehaviour
                     Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down * 2);
                     Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left * 2);
                     Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right * 2);
+                }
+
+                if (grid[path[path.Count-1]] == TileType.TileTypes.MOUNTAIN)
+                {
+                    Map.Instance.Reveal(path[path.Count - 1] + new Vector2Int(-1, -1));
+                    Map.Instance.Reveal(path[path.Count - 1] + new Vector2Int(-1, 1));
+                    Map.Instance.Reveal(path[path.Count - 1] + new Vector2Int(1, -1));
+                    Map.Instance.Reveal(path[path.Count - 1] + new Vector2Int(1, 1));
+                    mountain = true;
                 }
 
                 if (grid[path[path.Count - 1]] == TileType.TileTypes.FOREST)
@@ -245,8 +261,12 @@ public class Player : MonoBehaviour
                 DialogueController.Instance.RevealedChestMessage();
             else if (!won && wood)
                 DialogueController.Instance.WoodMessage();
-            else if(!won && wrongDig)
+            else if (!won && wrongDig)
                 DialogueController.Instance.WrongDigMessage();
+            else if (!won && mountain)
+                DialogueController.Instance.MountainMessage();
+            else if (!won && desert)
+                DialogueController.Instance.DesertMessage();
             else
                 DialogueController.Instance.SuccesfulExpeditionMessage();
         }
