@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour {
     public Tilemap clueTileMap;
 
     public GameObject actionBar;
+    
+    public GameObject activeItem;
 
     Dictionary<string, Tile> tiles;
 
@@ -41,6 +43,7 @@ public class UIManager : MonoBehaviour {
         {
             _instance = this;
         }
+        this.activeItem.SetActive(false);
     }
 
     public void setWorkersLeft(int workersLeft){
@@ -54,6 +57,10 @@ public class UIManager : MonoBehaviour {
     public void setWoodCounter(int count)
     {
         this.woodCounter.text = $"Wood x {count}";
+    }
+    public void setInventory(List<Item> items)
+    {
+        this.activeItem.SetActive(true);
     }
 
     public void setClue(Dictionary<Vector2Int, string> clueGrid){

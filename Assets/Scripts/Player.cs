@@ -139,10 +139,13 @@ public class Player : MonoBehaviour
             this.workersLeft--;
             Debug.Log($"{this}: LOST A WORKER: WORKERS LEFT {workersLeft}");
 
-            if(this.doIHaveItem(Item.ItemKind.FLYING_PIDGEON) != null){
+            if(this.doIHaveItem(Item.ItemKind.HOMING_PIDGEON) != null){
                 //I have the flying pidgeon so the path is marked anyways.
                 for (int i = 0; i < path.Count; i++) {
                     Map.Instance.Reveal(path[i]);
+                    if (grid[path[i]] == TileType.TileTypes.RIVER ){
+                        break;
+                    }
                 }
             }
 
@@ -186,8 +189,7 @@ public class Player : MonoBehaviour
                 Item gotItem = Map.Instance.openChest(path[path.Count - 1]);
                 Debug.Log($"YOU GOT {gotItem.getName()}");
                 this.items.Add(gotItem);
-                
-                //TODO: UIManager.Instance.setInventary(this.items);
+                UIManager.Instance.setInventory(this.items);
 
             }
 

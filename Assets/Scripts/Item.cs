@@ -8,7 +8,7 @@ public class Item
 {
 
     public enum ItemKind {
-        FLYING_PIDGEON,
+        HOMING_PIDGEON,
         BINOCULARS,
         ANCESTRAL_KNOWLEDGE
     }
@@ -40,8 +40,8 @@ public class Item
                 item.image = "";
                 item.kind = kind;
             break;
-            case ItemKind.FLYING_PIDGEON:
-                item.name = "Flying Pidgeon";
+            case ItemKind.HOMING_PIDGEON:
+                item.name = "Homing Pidgeon";
                 item.image = "";
                 item.kind = kind;
             break;
