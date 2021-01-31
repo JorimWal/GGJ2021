@@ -512,7 +512,7 @@ public class Map : MonoBehaviour {
                 throw new Exception("Grid out of bounds!");
             }
 
-            if(type == TileType.TileTypes.DESERT ){
+            if(type == TileType.TileTypes.RIVER ){
                 borderWeAreUsing = BorderType.BorderTypes.DANGER;
             };
             Debug.Log($"We draw the cursor over {this.cursorPosition}");
