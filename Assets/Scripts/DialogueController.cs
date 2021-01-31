@@ -148,6 +148,10 @@ public class DialogueController : MonoBehaviour
                 break;
         } 
     }
+    public void WrongDigMessage()
+    {
+        textBubble.SetContent("El Dorado was not laying in this location.");
+    }
 
     public void SwitchSceneToTutorial1()
     {

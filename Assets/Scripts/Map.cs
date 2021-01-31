@@ -346,6 +346,11 @@ public class Map : MonoBehaviour {
         return Item.createItem(Item.ItemKind.ANCESTRAL_KNOWLEDGE);
     }
 
+    public void wrongDigSite(Vector2Int position){
+        this.grid[position] = TileType.TileTypes.DIG_ATTEMPT;
+        tileMapController.DrawTile(position, TileType.TileTypes.DIG_ATTEMPT);
+    }
+
 
     public Dictionary<Vector2Int, TileType.TileTypes> getGrid(){
         return this.grid;

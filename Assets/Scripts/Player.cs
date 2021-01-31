@@ -175,6 +175,7 @@ public class Player : MonoBehaviour
             bool revealedchest = false;
             bool openedchest = false;
             bool wood = false;
+            bool wrongDig = false;
             //If the worker does not die
             //Reveal all tiles the worker walked
             for(int i = 0; i < path.Count; i++)
@@ -184,55 +185,68 @@ public class Player : MonoBehaviour
                     revealedchest = true;
             }
             //You win if digging on the victory tile
-            if (Map.Instance.treasurePosition == path[path.Count - 1] && input[input.Length - 1] == 'F')
-            {
-                this.win();
-                won = true;
-                DisableControl();
-            }
-            //Reveal all tiles directly adjacent to the worker's final spot
-            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up );
-            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down);
-            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left );
-            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
-            if (this.doIHaveItem(Item.ItemKind.BINOCULARS) != null)
-            {
-                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up * 2);
-                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down* 2);
-                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left * 2);
-                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right * 2);
-            }
-
-            if(grid[path[path.Count - 1]] == TileType.TileTypes.FOREST){
-                Debug.Log($"WOOD GATHERED FROM THIS TILE {path[path.Count - 1]}");
-                woodPieces++;
-                Map.Instance.chopForest(path[path.Count - 1]);
-                UIManager.Instance.setWoodCounter(this.woodPieces);
-                DialogueController.Instance.WoodMessage();
-            } else if(grid[path[path.Count - 1]] == TileType.TileTypes.CHEST) {
-                Debug.Log($"ITEM GOT FROM THIS CHEST {path[path.Count - 1]}");
-                Item gotItem = Map.Instance.openChest(path[path.Count - 1]);
-                Debug.Log($"YOU GOT {gotItem.getName()}");
-                this.items.Add(gotItem);
-
-
-                //UIManager.Instance.setInventory(this.items);
-                UIManager.Instance.addAnItemToInventory(gotItem);
-
-                if(this.doIHaveItem(Item.ItemKind.ANCESTRAL_KNOWLEDGE) != null){
-                    
-                    Map.Instance.setClueSizeFromTreasure(2);
-                    Map.Instance.setClue();
+            if(input[input.Length - 1] == 'F'){
+                if (Map.Instance.treasurePosition == path[path.Count - 1])
+                {
+                    this.win();
+                    won = true;
+                    DisableControl();
+                } else {
+                    Debug.Log($"Didn't found El Dorado. We are marking.");
+                    Map.Instance.wrongDigSite(path[path.Count - 1]);
+                    wrongDig = true;
+                }
+            } else {
+                // Normal action taken (not dig).
+                //Reveal all tiles directly adjacent to the worker's final spot
+                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up);
+                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down);
+                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left);
+                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
+                if (this.doIHaveItem(Item.ItemKind.BINOCULARS) != null)
+                {
+                    Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up * 2);
+                    Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down * 2);
+                    Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left * 2);
+                    Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right * 2);
                 }
 
-                DialogueController.Instance.TreasureMessage(gotItem);
-                openedchest = true;
-            }
+                if (grid[path[path.Count - 1]] == TileType.TileTypes.FOREST)
+                {
+                    Debug.Log($"WOOD GATHERED FROM THIS TILE {path[path.Count - 1]}");
+                    woodPieces++;
+                    Map.Instance.chopForest(path[path.Count - 1]);
+                    UIManager.Instance.setWoodCounter(this.woodPieces);
+                    wood = true;
+                }
+                else if (grid[path[path.Count - 1]] == TileType.TileTypes.CHEST)
+                {
+                    Debug.Log($"ITEM GOT FROM THIS CHEST {path[path.Count - 1]}");
+                    Item gotItem = Map.Instance.openChest(path[path.Count - 1]);
+                    Debug.Log($"YOU GOT {gotItem.getName()}");
+                    this.items.Add(gotItem);
 
+
+                    //UIManager.Instance.setInventory(this.items);
+                    UIManager.Instance.addAnItemToInventory(gotItem);
+
+                    if (this.doIHaveItem(Item.ItemKind.ANCESTRAL_KNOWLEDGE) != null)
+                    {
+
+                        Map.Instance.setClueSizeFromTreasure(2);
+                        Map.Instance.setClue();
+                    }
+
+                    DialogueController.Instance.TreasureMessage(gotItem);
+                    openedchest = true;
+                }
+            }
             if (!won && !openedchest && revealedchest)
                 DialogueController.Instance.RevealedChestMessage();
             else if (!won && wood)
                 DialogueController.Instance.WoodMessage();
+            else if(!won && wrongDig)
+                DialogueController.Instance.WrongDigMessage();
             else
                 DialogueController.Instance.SuccesfulExpeditionMessage();
         }
