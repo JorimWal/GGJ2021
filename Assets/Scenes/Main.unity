@@ -167,11 +167,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &246279016 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 647390507026380372, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
-  m_PrefabInstance: {fileID: 8795050989182043049}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &437478486
 GameObject:
   m_ObjectHideFlags: 0
@@ -2995,6 +2990,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1067280240 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1409556860622653947, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
+  m_PrefabInstance: {fileID: 8795050989182043049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1187837683 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 937084273835101545, guid: 653c19892874de64194a0c7ea3e91753, type: 3}
@@ -4027,13 +4027,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2093958136}
     - target: {fileID: 5853588708744578763, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
+      propertyPath: itemList
+      value: 
+      objectReference: {fileID: 1067280240}
+    - target: {fileID: 5853588708744578763, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
       propertyPath: actionBar
       value: 
       objectReference: {fileID: 988248734}
     - target: {fileID: 5853588708744578763, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
       propertyPath: activeItem
       value: 
-      objectReference: {fileID: 246279016}
+      objectReference: {fileID: 7330365116156211228, guid: 294834caf1630274ca107e807c732366, type: 3}
     - target: {fileID: 5853588708744578763, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
       propertyPath: turnsTaken
       value: 
