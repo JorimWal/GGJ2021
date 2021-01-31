@@ -46,5 +46,5 @@ MonoBehaviour:
   turnsTaken: 0
   turnslimit: 15
   workersLeft: 5
-  textUI: {fileID: 0}
   woodPieces: 0
+  ActionButtons: {fileID: 0}
