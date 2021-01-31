@@ -32,7 +32,7 @@ public class Item
         switch(kind){
             case ItemKind.ANCESTRAL_KNOWLEDGE:
                 item.name = "Ancestral Knowledge";
-                item.image = "Items/pidgeon";
+                item.image = "Items/ancestral";
                 item.kind = kind;
                 break;
             case ItemKind.BINOCULARS:

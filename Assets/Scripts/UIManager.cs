@@ -72,7 +72,7 @@ public class UIManager : MonoBehaviour {
     public void setClue(Dictionary<Vector2Int, string> clueGrid){
         tiles = TileMapController.LoadResources();
         this.clueTileMap.ClearAllTiles();
-        int clueSize = Map.Instance.getClueSizeFromTreasure() * 3;
+        int clueSize = Map.Instance.getClueSizeFromTreasure() + 2;
         this.clueTileMap.size = new Vector3Int(clueSize,clueSize,0);
         Debug.Log($"Setting ClueMap");
 

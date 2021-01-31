@@ -57,6 +57,11 @@ public class Map : MonoBehaviour {
         return this.clueSizeFromTreasure;
     }
 
+    public void setClueSizeFromTreasure(int clueSizeFromTreasure)
+    {
+        this.clueSizeFromTreasure = clueSizeFromTreasure;
+    }
+
     private Dictionary<Vector2Int, TileType.TileTypes> grid;
     public Vector2Int getPlayerPosition()
     {
@@ -338,7 +343,7 @@ public class Map : MonoBehaviour {
     public Item openChest(Vector2Int position){
         this.grid[position] = TileType.TileTypes.OPEN_CHEST;
         tileMapController.DrawTile(position, TileType.TileTypes.OPEN_CHEST);
-        return Item.createItem(Item.ItemKind.BINOCULARS);
+        return Item.createItem(Item.ItemKind.ANCESTRAL_KNOWLEDGE);
     }
 
 

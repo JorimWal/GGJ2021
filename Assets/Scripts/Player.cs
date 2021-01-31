@@ -219,6 +219,12 @@ public class Player : MonoBehaviour
                 //UIManager.Instance.setInventory(this.items);
                 UIManager.Instance.addAnItemToInventory(gotItem);
 
+                if(this.doIHaveItem(Item.ItemKind.ANCESTRAL_KNOWLEDGE) != null){
+                    
+                    Map.Instance.setClueSizeFromTreasure(2);
+                    Map.Instance.setClue();
+                }
+
                 DialogueController.Instance.TreasureMessage(gotItem);
                 openedchest = true;
             }
