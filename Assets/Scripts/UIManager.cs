@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour {
     public GameObject activeItem;
     public GameObject itemList;
 
+    public GameObject HoverCanvas;
+
     Dictionary<string, Tile> tiles;
 
 
@@ -44,6 +46,14 @@ public class UIManager : MonoBehaviour {
         else
         {
             _instance = this;
+        }
+    }
+
+    private void Update()
+    {
+        if(HoverCanvas != null)
+        {
+
         }
     }
 
