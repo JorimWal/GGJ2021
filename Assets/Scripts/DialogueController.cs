@@ -104,13 +104,29 @@ public class DialogueController : MonoBehaviour
     {
         switch (item.getKind())
         {
+            case Item.ItemKind.ANCESTRAL_KNOWLEDGE:
+                AncestralKnowledgeMessage();
+                break;
             case Item.ItemKind.HOMING_PIDGEON:
                 PigeonMessage();
+                break;
+            case Item.ItemKind.BINOCULARS:
+                BinocularsMessage();
                 break;
             default:
                 textBubble.SetContent("Your workers find a chest containing useful supplies!", green.r, green.g, green.b);
                 break;
         }
+    }
+
+    public void BinocularsMessage()
+    {
+        textBubble.SetContent("Your workers find a pair of spyglasses, allowing them to survey further", green.r, green.g, green.b);
+    }
+
+    public void AncestralKnowledgeMessage()
+    {
+        textBubble.SetContent("Your workers find a chest containg another piece of the map!", green.r, green.g, green.b);
     }
 
     public void PigeonMessage()
