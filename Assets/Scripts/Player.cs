@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     Vector2Int position;
 
     public int turnsTaken = 0;
-    public int turnslimit = 15;
+    public int turnslimit = 20;
     public int workersLeft = 5;
 
 
