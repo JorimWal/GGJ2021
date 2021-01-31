@@ -3969,6 +3969,10 @@ PrefabInstance:
       propertyPath: textUI
       value: 
       objectReference: {fileID: 2093958136}
+    - target: {fileID: 937084273835101545, guid: 653c19892874de64194a0c7ea3e91753, type: 3}
+      propertyPath: ActionButtons
+      value: 
+      objectReference: {fileID: 8795050989182043050}
     - target: {fileID: 937084273835101550, guid: 653c19892874de64194a0c7ea3e91753, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -4130,7 +4134,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5853588708292154029, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b2cd8a0407df7ed46a16ce2bb20091de, type: 3}
 --- !u!1 &5853588708292154028 stripped
 GameObject:
@@ -4771,3 +4776,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
+--- !u!1 &8795050989182043050 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 627217192, guid: 967a1d644f299c6498c2dbfa6863c231, type: 3}
+  m_PrefabInstance: {fileID: 8795050989182043049}
+  m_PrefabAsset: {fileID: 0}
