@@ -14,7 +14,9 @@ public class ActionBarController : MonoBehaviour
             //Reset the Action Bar
             foreach (Transform child in transform)
                 Destroy(child.gameObject);
-            foreach(char action in value)
+            string onlyShowFiveChars = value.Substring(value.Length -5 < 0 ? 0 : (value.Length-5));
+            Debug.Log($"ONLY SHOWING {onlyShowFiveChars} OF {value}");
+            foreach(char action in onlyShowFiveChars)
             {
                 //create a button image
                 GameObject instance = new GameObject(action.ToString());
