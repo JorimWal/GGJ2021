@@ -43,3 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685e80585aee58a4c8e3d22e0b5732cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnsTaken: 0
+  turnslimit: 15
+  workersLeft: 5
+  textUI: {fileID: 0}
+  woodPieces: 0

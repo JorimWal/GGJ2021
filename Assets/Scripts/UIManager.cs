@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour {
     public GameObject actionBar;
     
     public GameObject activeItem;
+    public GameObject itemList;
 
     Dictionary<string, Tile> tiles;
 
@@ -43,7 +44,6 @@ public class UIManager : MonoBehaviour {
         {
             _instance = this;
         }
-        this.activeItem.SetActive(false);
     }
 
     public void setWorkersLeft(int workersLeft){
@@ -58,9 +58,11 @@ public class UIManager : MonoBehaviour {
     {
         this.woodCounter.text = $"Wood x {count}";
     }
-    public void setInventory(List<Item> items)
-    {
-        this.activeItem.SetActive(true);
+
+    public void addAnItemToInventory(Item item){
+        GameObject newItem = Instantiate(this.activeItem,Vector3.zero,Quaternion.identity);
+        newItem.transform.parent = this.itemList.transform;
+        newItem.SetActive(true);
     }
 
     public void setClue(Dictionary<Vector2Int, string> clueGrid){

@@ -45,6 +45,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapSize: 10
+  forestTiles: 7
+  chestsTiles: 1
+  desertTiles: 3
+  riverTiles: 5
+  mountainTiles: 4
+  clueSizeFromTreasure: 1
+  treasurePosition: {x: 0, y: 0}
+  tileMapController: {fileID: 0}
 --- !u!114 &5853588708744578763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,5 +65,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b333117d9895744c9b3aa79fb2fa859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xInput: {fileID: 0}
-  yInput: {fileID: 0}
+  workersLeft: {fileID: 0}
+  turnsTaken: {fileID: 0}
+  woodCounter: {fileID: 0}
+  clueTileMap: {fileID: 0}
+  actionBar: {fileID: 0}
+  activeItem: {fileID: 0}

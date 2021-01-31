@@ -191,7 +191,8 @@ public class Player : MonoBehaviour
                 Item gotItem = Map.Instance.openChest(path[path.Count - 1]);
                 Debug.Log($"YOU GOT {gotItem.getName()}");
                 this.items.Add(gotItem);
-                UIManager.Instance.setInventory(this.items);
+                //UIManager.Instance.setInventory(this.items);
+                UIManager.Instance.addAnItemToInventory(gotItem);
 
             }
 
