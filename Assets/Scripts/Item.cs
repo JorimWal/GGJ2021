@@ -26,6 +26,20 @@ public class Item
     }
 
 
+    public static Item createRandomItem(){
+        int index = UnityEngine.Random.Range(0,2);
+        switch (index)
+        {
+            case 0:
+                return createItem(ItemKind.ANCESTRAL_KNOWLEDGE);
+            case 1:
+                return createItem(ItemKind.BINOCULARS);
+            case 2:
+                return createItem(ItemKind.HOMING_PIDGEON);
+            default:
+                return createItem(ItemKind.ANCESTRAL_KNOWLEDGE);
+        }
+    }
     public static Item createItem(ItemKind kind){
         
         Item item = new Item();

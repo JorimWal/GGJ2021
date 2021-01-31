@@ -343,7 +343,7 @@ public class Map : MonoBehaviour {
     public Item openChest(Vector2Int position){
         this.grid[position] = TileType.TileTypes.OPEN_CHEST;
         tileMapController.DrawTile(position, TileType.TileTypes.OPEN_CHEST);
-        return Item.createItem(Item.ItemKind.ANCESTRAL_KNOWLEDGE);
+        return Item.createRandomItem();
     }
 
     public void wrongDigSite(Vector2Int position){
