@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     public List<Item> items = new List<Item>();
     public int woodPieces = 0;
 
+    public GameObject ActionButtons;
+    bool disableControls = false;
+
     void Start() {
         Debug.Log($"Created Player");
         this.position = Map.Instance.getPlayerPosition();
@@ -27,7 +30,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        HandleInput();
+        if(!disableControls)
+            HandleInput();
     }
 
     void HandleInput()
@@ -63,6 +67,14 @@ public class Player : MonoBehaviour
             ActionBarController.Instance.ActionInput = "";
             Map.Instance.resetCursor();
         }
+    }
+
+    void DisableControl()
+    {
+        disableControls = true;
+        Button[] buttons = ActionButtons.GetComponentsInChildren<Button>();
+        foreach (Button button in buttons)
+            button.enabled = false;
     }
 
     public List<Vector2Int> moveWorker (string instructions){
@@ -174,6 +186,7 @@ public class Player : MonoBehaviour
             {
                 this.win();
                 won = true;
+                DisableControl();
             }
             //Reveal all tiles directly adjacent to the worker's final spot
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up);
@@ -198,7 +211,9 @@ public class Player : MonoBehaviour
 
             if (!won && !openedchest && revealedchest)
                 DialogueController.Instance.RevealedChestMessage();
-            else if(!wood)
+            else if (!won && wood)
+                DialogueController.Instance.WoodMessage();
+            else
                 DialogueController.Instance.SuccesfulExpeditionMessage();
         }
         this.checkForTurns();
@@ -212,6 +227,7 @@ public class Player : MonoBehaviour
         UIManager.Instance.setTurnsTaken(this.turnsTaken, turnslimit);
         if(turnsTaken > turnslimit){
             this.gameOver();
+            DialogueController.Instance.LossMessage(false);
         }
 
     }
@@ -247,6 +263,7 @@ public class Player : MonoBehaviour
 
     public void gameOver(){
         Debug.Log($"YOU LOSE!!!");
+        DisableControl();
     }
 
     public bool oppositeAction(string action, string lastAction){

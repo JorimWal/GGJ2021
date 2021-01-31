@@ -28,10 +28,11 @@ public class TextBubble : MonoBehaviour
     {
         if (text == null)
             text = GetComponentInChildren<Text>();
-        text.color = new Color(colorR, colorG, colorB, 1);
+        
         if ((!queueMessage) || this.content == "")
         {
             this.content = content;
+            text.color = new Color(colorR, colorG, colorB, 1);
             StopAllCoroutines();
             EmptyBubble();
             StartCoroutine(ScrollText());
