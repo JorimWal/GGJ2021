@@ -24,7 +24,7 @@ public class TileMapController : MonoBehaviour
 
         int mapSize = Map.Instance.getMapSize();
         //Move the map a little bit so it is centered, while keeping 0,0 at top left
-        float halfMapSize = mapSize / 2f;
+        float halfMapSize = (mapSize / 2f) * 1.5f;
         transform.position = transform.position - new Vector3(halfMapSize, halfMapSize, 0);
         bordersTileMap.transform.position = bordersTileMap.transform.position - new Vector3(halfMapSize, halfMapSize, 0);
         tileMapBehaviour.size = new Vector3Int(mapSize, mapSize, 0);
