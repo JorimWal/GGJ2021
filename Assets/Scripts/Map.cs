@@ -80,7 +80,7 @@ public class Map : MonoBehaviour {
         }
     }
 
-    public enum MapType { Random, Tutorial1}
+    public enum MapType { Random, Tutorial1, Tutorial2}
 
     private void createMap(MapType mapType = MapType.Random) {
         switch (mapType)
@@ -108,6 +108,39 @@ public class Map : MonoBehaviour {
                 textBubble.SetContent("south of the Forest. P.S. I should remember to give the directions", queueMessage : true);
                 textBubble.SetContent("step by step, these men get lost so easily.", queueMessage : true);
 
+                setClue();
+                break;
+            case MapType.Tutorial2:
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        Vector2Int vector = new Vector2Int(i, j);
+                        this.grid.Add(vector, TileType.TileTypes.NORMAL);
+                    }
+                }
+                grid[new Vector2Int(0, 0)] = TileType.TileTypes.PLAYER;
+                grid[new Vector2Int(0, 1)] = TileType.TileTypes.CHEST;
+                //Generate a 3x3 forest on the right side of the map
+                grid[new Vector2Int(9, 0)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(9, 1)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(9, 2)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(8, 0)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(8, 1)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(8, 2)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(7, 0)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(7, 1)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(7, 2)] = TileType.TileTypes.FOREST;
+                grid[new Vector2Int(0, 9)] = TileType.TileTypes.MOUNTAIN;
+                for(int x = 0; x < 10; x++)
+                {
+                    grid[new Vector2Int(x, 5)] = TileType.TileTypes.RIVER;
+                }
+                this.treasurePosition = new Vector2Int(0, 8);
+                textBubble.SetContent("Captain's Log, day 96. I am once again hopelessly lost.", queueMessage: true);
+                textBubble.SetContent("The last clue we had rumored that the Dorado we hope is El Dorado ", queueMessage: true);
+                textBubble.SetContent("Should be to the North and right at the cusp of the mountains.", queueMessage: true);
+                textBubble.SetContent("I should send more lacke- I mean workers out to find these mountains straight away.", queueMessage: true);
                 setClue();
                 break;
             default:
@@ -511,7 +544,4 @@ public class Map : MonoBehaviour {
 
         this.uIManager.setClue(clueGrid);
     }
-
-
-
 }

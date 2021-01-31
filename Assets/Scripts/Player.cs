@@ -15,8 +15,6 @@ public class Player : MonoBehaviour
     public int workersLeft = 5;
 
     public List<Item> items = new List<Item>();
-
-    public TextBubble textUI;
     public int woodPieces = 0;
 
     void Start() {
@@ -133,8 +131,6 @@ public class Player : MonoBehaviour
             return;
         Debug.Log($"{this}: INSTRUCTIONS TO EXCECUTE: {input}");
         List<Vector2Int> path = moveWorker(input);
-        //UI color
-        Color red = new Color(234f / 255f, 32f / 255f, 39f / 255f);
         if (checkForWorkerDeath(path)) { 
             this.workersLeft--;
             Debug.Log($"{this}: LOST A WORKER: WORKERS LEFT {workersLeft}");
@@ -151,22 +147,27 @@ public class Player : MonoBehaviour
 
             UIManager.Instance.setWorkersLeft(this.workersLeft);
             if (workersLeft <= 0){
-                textUI.SetContent("All your workers have perished, your search is over", red.r, red.g, red.b);
+                DialogueController.Instance.LossMessage(true);
                 this.gameOver();
             }
             else
             {
-                textUI.SetContent("Your worker did not return from their expedition", red.r, red.g, red.b);
+                DialogueController.Instance.WorkerDeathMessage(this.doIHaveItem(Item.ItemKind.HOMING_PIDGEON) != null);
             }
         }
         else
         {
             bool won = false;
+            bool revealedchest = false;
+            bool openedchest = false;
+            bool wood = false;
             //If the worker does not die
             //Reveal all tiles the worker walked
             for(int i = 0; i < path.Count; i++)
             {
                 Map.Instance.Reveal(path[i]);
+                if (grid[path[i]] == TileType.TileTypes.CHEST)
+                    revealedchest = true;
             }
             //You win if digging on the victory tile
             if (Map.Instance.treasurePosition == path[path.Count - 1] && input[input.Length - 1] == 'F')
@@ -184,17 +185,21 @@ public class Player : MonoBehaviour
                 woodPieces++;
                 Map.Instance.chopForest(path[path.Count - 1]);
                 UIManager.Instance.setWoodCounter(this.woodPieces);
+                DialogueController.Instance.WoodMessage();
             } else if(grid[path[path.Count - 1]] == TileType.TileTypes.CHEST) {
                 Debug.Log($"ITEM GOT FROM THIS CHEST {path[path.Count - 1]}");
                 Item gotItem = Map.Instance.openChest(path[path.Count - 1]);
                 Debug.Log($"YOU GOT {gotItem.getName()}");
                 this.items.Add(gotItem);
                 UIManager.Instance.setInventory(this.items);
-
+                DialogueController.Instance.TreasureMessage(gotItem);
+                openedchest = true;
             }
 
-           if(!won)
-                textUI.SetContent("Your worker brings new insight of your surroundings");
+            if (!won && !openedchest && revealedchest)
+                DialogueController.Instance.RevealedChestMessage();
+            else if(!wood)
+                DialogueController.Instance.SuccesfulExpeditionMessage();
         }
         this.checkForTurns();
         //Empty the action bar for new inputs

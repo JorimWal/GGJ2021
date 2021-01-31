@@ -55,6 +55,11 @@ public class TextBubble : MonoBehaviour
         while (true)
         {
             int index = 0;
+
+            //This shouldn't be necessary, but make sure you can't have invisible text
+            if (text.color == Color.black)
+                text.color = Color.white;
+
             while (index < content.Length)
             {
                 text.text = text.text + content[index];
@@ -63,6 +68,7 @@ public class TextBubble : MonoBehaviour
             }
             if (queue.Count <= 0)
             {
+                content = "";
                 yield return new WaitForSeconds(timeBetweenMessages);
                 OnFinishQueue.Invoke();
                 break;
