@@ -14,10 +14,12 @@ public class Player : MonoBehaviour
     public int turnslimit = 15;
     public int workersLeft = 5;
 
+
     public List<Item> items = new List<Item>();
     public int woodPieces = 0;
 
     public GameObject ActionButtons;
+    
     bool disableControls = false;
 
     void Start() {
@@ -189,10 +191,18 @@ public class Player : MonoBehaviour
                 DisableControl();
             }
             //Reveal all tiles directly adjacent to the worker's final spot
-            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up);
+            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up );
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down);
-            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left);
+            Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left );
             Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right);
+            if (this.doIHaveItem(Item.ItemKind.BINOCULARS) != null)
+            {
+                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.up * 2);
+                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.down* 2);
+                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.left * 2);
+                Map.Instance.Reveal(path[path.Count - 1] + Vector2Int.right * 2);
+            }
+
             if(grid[path[path.Count - 1]] == TileType.TileTypes.FOREST){
                 Debug.Log($"WOOD GATHERED FROM THIS TILE {path[path.Count - 1]}");
                 woodPieces++;
@@ -204,6 +214,8 @@ public class Player : MonoBehaviour
                 Item gotItem = Map.Instance.openChest(path[path.Count - 1]);
                 Debug.Log($"YOU GOT {gotItem.getName()}");
                 this.items.Add(gotItem);
+
+
                 //UIManager.Instance.setInventory(this.items);
                 UIManager.Instance.addAnItemToInventory(gotItem);
 

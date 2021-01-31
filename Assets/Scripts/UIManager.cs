@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,8 +62,11 @@ public class UIManager : MonoBehaviour {
 
     public void addAnItemToInventory(Item item){
         GameObject newItem = Instantiate(this.activeItem,Vector3.zero,Quaternion.identity);
-        newItem.transform.parent = this.itemList.transform;
+        List<Image> images = newItem.GetComponentsInChildren<Image>().ToList();
+        //I know this is ugly AF im sorry
+        images[1].sprite = Resources.Load<Sprite>(item.getImage());
         newItem.SetActive(true);
+        newItem.transform.SetParent(this.itemList.transform);
     }
 
     public void setClue(Dictionary<Vector2Int, string> clueGrid){
