@@ -343,7 +343,10 @@ public class Map : MonoBehaviour {
     public Item openChest(Vector2Int position){
         this.grid[position] = TileType.TileTypes.OPEN_CHEST;
         tileMapController.DrawTile(position, TileType.TileTypes.OPEN_CHEST);
-        return Item.createRandomItem();
+        if (map == MapType.Tutorial2)
+            return Item.createItem(Item.ItemKind.HOMING_PIDGEON);
+        else
+            return Item.createRandomItem();
     }
 
     public void wrongDigSite(Vector2Int position){
