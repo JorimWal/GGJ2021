@@ -32,17 +32,17 @@ public class Item
         switch(kind){
             case ItemKind.ANCESTRAL_KNOWLEDGE:
                 item.name = "Ancestral Knowledge";
-                item.image = "";
+                item.image = "Items/pidgeon";
                 item.kind = kind;
                 break;
             case ItemKind.BINOCULARS:
                 item.name = "Binoculars";
-                item.image = "";
+                item.image = "Items/binoculars";
                 item.kind = kind;
             break;
             case ItemKind.HOMING_PIDGEON:
                 item.name = "Homing Pidgeon";
-                item.image = "";
+                item.image = "Items/pidgeon";
                 item.kind = kind;
             break;
         }
@@ -51,6 +51,10 @@ public class Item
     public string getName()
     {
         return this.name;
+    }
+    public string getImage()
+    {
+        return this.image;
     }
 
 
