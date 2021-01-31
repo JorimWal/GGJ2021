@@ -43,7 +43,7 @@ public class DialogueController : MonoBehaviour
                 break;
             default:
                 textBubble.SetContent("After countless hours of digging, your workers spot a glint of gold. You have found the golden city El Dorado!", gold.r, gold.g, gold.b);
-
+                textBubble.OnFinishQueue.AddListener(SwitchSceneToRandom);
                 break;
         }
     }
